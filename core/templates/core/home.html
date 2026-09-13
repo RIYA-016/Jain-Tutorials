@@ -1,0 +1,367 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!--HERO SECTION -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <p class="hero-tagline">CBSE FOCUSED</p>
+
+        <h1>
+            Strong Concepts.
+            <span>Clear Understanding.</span>
+            <span>Better Learning.</span>
+        </h1>
+
+        <p class="hero-description">
+            Jain Tutorials focuses on building strong concepts for CBSE students
+            from Classes 7 to 10 through understanding, regular practice and
+            consistent guidance.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="{% url 'courses' %}" class="primary-btn">
+                Explore Classes
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- HERO IMAGE -->
+    <div class="hero-image">
+
+        <img src="{% static 'core/images/hero.png' %}"
+             alt="Jain Tutorials">
+
+    </div>
+
+</section>
+
+
+<!-- WHY JAIN TUTORIALS -->
+
+<section class="features">
+
+    <div class="section-heading">
+
+        <p class="section-tag">WHY JAIN TUTORIALS?</p>
+
+        <h2>
+            CBSE means Jain Tutorials.
+            <span></span>
+        </h2>
+
+        <p>
+            We focus only on CBSE education for Classes 7 to 10,
+            keeping our teaching closely aligned with the curriculum and 
+            focused on what students need throughout the academic year.
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <!-- 01 -->
+        <div class="feature-card">
+
+            <div class="feature-top">
+                <span class="feature-number">01</span>
+                <span class="feature-line"></span>
+            </div>
+
+            <h3>Concept-Based Learning</h3>
+
+            <p>
+                Understanding comes before memorisation. We make sure
+                students understand the topic before moving ahead.
+            </p>
+
+        </div>
+
+
+        <!-- 02 -->
+        <div class="feature-card">
+
+            <div class="feature-top">
+                <span class="feature-number">02</span>
+                <span class="feature-line"></span>
+            </div>
+
+            <h3>Chapter-Wise Worksheets</h3>
+
+            <p>
+                Focused worksheets give students regular practice and
+                help strengthen what they learn in class.
+            </p>
+
+        </div>
+
+
+        <!-- 03 -->
+        <div class="feature-card">
+
+            <div class="feature-top">
+                <span class="feature-number">03</span>
+                <span class="feature-line"></span>
+            </div>
+
+            <h3>Weekly Tests</h3>
+
+            <p>
+                Regular tests keep students consistent and help identify
+                topics that need more attention.
+            </p>
+
+        </div>
+
+
+        <!-- 04 -->
+        <div class="feature-card">
+
+            <div class="feature-top">
+                <span class="feature-number">04</span>
+                <span class="feature-line"></span>
+            </div>
+
+            <h3>Doubt Solving</h3>
+
+            <p>
+                Students can ask questions freely and clear their doubts
+                before moving on to the next topic.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     OUR CLASSES
+========================= -->
+<!-- =========================
+     OUR CLASSES
+========================= -->
+
+<section class="courses">
+
+    <div class="section-heading">
+
+        <p class="section-tag">OUR CLASSES</p>
+
+        <h2>
+            The right approach for every stage.
+        </h2>
+
+        <p>
+            From strengthening fundamentals in Classes 7 and 8
+            to focused board preparation in Classes 9 and 10,
+            with a Foundation Batch for students who want to start early.
+        </p>
+
+    </div>
+
+
+    <div class="course-grid">
+
+        <!-- CLASS 7 -->
+        <div class="course-card">
+
+            <div class="course-number">01</div>
+
+            <h3>Class 7</h3>
+
+            <p>
+                Strengthen the basics, understand concepts clearly
+                and develop the right study habits from the beginning.
+            </p>
+
+            <div class="subjects">
+                Mathematics · Science · SST · English
+            </div>
+
+            <a href="{% url 'class_detail' 7 %}" class="course-link">
+                Explore Class 7 →
+            </a>
+
+        </div>
+
+
+        <!-- CLASS 8 -->
+        <div class="course-card">
+
+            <div class="course-number">02</div>
+
+            <h3>Class 8</h3>
+
+            <p>
+                Strengthen core concepts, improve problem-solving skills
+                and build consistency across subjects.
+            </p>
+
+            <div class="subjects">
+                Mathematics · Science · SST · English
+            </div>
+
+            <a href="{% url 'class_detail' 8 %}" class="course-link">
+                Explore Class 8 →
+            </a>
+
+        </div>
+
+
+        <!-- CLASS 9 -->
+        <div class="course-card">
+
+            <div class="course-number">03</div>
+
+            <h3>Class 9</h3>
+
+            <p>
+                Strengthen concepts through advanced application,
+                board-level questions and competency-based practice.
+            </p>
+
+            <div class="subjects">
+                Mathematics · Science · SST · English
+            </div>
+
+            <a href="{% url 'class_detail' 9 %}" class="course-link">
+                Explore Class 9 →
+            </a>
+
+        </div>
+
+
+        <!-- CLASS 10 -->
+        <div class="course-card">
+
+            <div class="course-number">04</div>
+
+            <h3>Class 10</h3>
+
+            <p>
+                Comprehensive board preparation through challenging
+                questions, competency-based practice and focused
+                exam preparation.
+            </p>
+
+            <div class="subjects">
+                Mathematics · Science · SST · English
+            </div>
+
+            <a href="{% url 'class_detail' 10 %}" class="course-link">
+                Explore Class 10 →
+            </a>
+
+        </div>
+
+
+        <!-- FOUNDATION BATCH -->
+        <div class="course-card foundation-card">
+
+            <div class="foundation-label">
+                FOUNDATION PROGRAM
+            </div>
+
+            <div class="course-number">05</div>
+
+            <h3>Foundation Batch</h3>
+
+            <p>
+                Build a strong academic base from an early stage,
+                with clear fundamentals that help students approach
+                higher classes with greater confidence.
+            </p>
+
+            <div class="subjects">
+                Strong Basics · Concept Clarity · Future Preparation
+            </div>
+
+            <a href="#" class="course-link">
+                Explore Foundation →
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CONTACT CTA
+========================= -->
+
+<section class="contact-strip">
+
+    <div class="contact-strip-content">
+
+        <div class="contact-strip-text">
+
+            <p class="section-tag">GET IN TOUCH</p>
+
+            <h2>Have a question about our classes?</h2>
+
+            <p>
+                Get in touch with us for class details, batch timings,
+                subjects or admission enquiries.
+            </p>
+
+        </div>
+
+
+        <div class="contact-options">
+
+            <a href="tel:+918999599025" class="contact-option">
+
+                <span class="contact-icon">☎</span>
+
+                <div>
+                    <strong>Call Us</strong>
+                    <small>Speak with us</small>
+                </div>
+
+            </a>
+
+            <a href="https://wa.me/918999599025?text=Hello%20Jain%20Tutorials%2C%20I%20would%20like%20to%20enquire%20about%20the%20classes."
+            target="_blank"
+            class="contact-option">
+
+                <span class="contact-icon">💬</span>
+
+                <div>
+                    <strong>WhatsApp</strong>
+                    <small>Send us a message</small>
+                </div>
+
+            </a>
+
+
+            <a href="{% url 'contact' %}" class="contact-option">
+
+                <span class="contact-icon">→</span>
+
+                <div>
+                    <strong>Contact Us</strong>
+                    <small>View contact details</small>
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock content %}

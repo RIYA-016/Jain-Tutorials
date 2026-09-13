@@ -1,0 +1,232 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+
+<!-- =========================
+     CLASSES HERO
+========================= -->
+
+<section class="classes-hero">
+
+    <div class="classes-hero-content">
+
+        <p class="section-tag">OUR CLASSES</p>
+
+        <h1>
+            Learning that grows
+            <span>with the student.</span>
+        </h1>
+
+        <p>
+            A structured academic approach for Classes 7 to 10,
+            with the right focus at every stage of learning.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CLASSES
+========================= -->
+
+<section class="classes-overview">
+
+    <!-- CLASS 7 -->
+
+    <div class="class-row">
+
+        <div class="class-info">
+
+            <span class="class-number">01</span>
+
+            <p class="section-tag">CLASS 7</p>
+
+            <h2>
+                Building the fundamentals.
+            </h2>
+
+            <p>
+                Strengthen the basics, understand concepts clearly
+                and develop the right study habits from the beginning.
+            </p>
+
+            <a href="{% url 'class_detail' 7 %}" class="class-link">
+                Explore Class 7 →
+            </a>
+
+        </div>
+
+        <div class="class-focus">
+
+            <span>FOCUS</span>
+
+            <h3>Concept Building</h3>
+
+            <p>
+                Mathematics · Science · SST · English
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLASS 8 -->
+
+    <div class="class-row">
+
+        <div class="class-info">
+
+            <span class="class-number">02</span>
+
+            <p class="section-tag">CLASS 8</p>
+
+            <h2>
+                Strengthening understanding.
+            </h2>
+
+            <p>
+                Strengthen core concepts, improve problem-solving
+                skills and build consistency across subjects.
+            </p>
+
+            <a href="{% url 'class_detail' 8 %}" class="class-link">
+                Explore Class 8 →
+            </a>
+
+        </div>
+
+        <div class="class-focus">
+
+            <span>FOCUS</span>
+
+            <h3>Application & Practice</h3>
+
+            <p>
+                Mathematics · Science · SST · English
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLASS 9 -->
+
+    <div class="class-row">
+
+        <div class="class-info">
+
+            <span class="class-number">03</span>
+
+            <p class="section-tag">CLASS 9</p>
+
+            <h2>
+                Preparing for higher academic demands.
+            </h2>
+
+            <p>
+                Strengthen concepts through advanced application,
+                board-level questions and competency-based practice.
+            </p>
+
+            <a href="{% url 'class_detail' 9 %}" class="class-link">
+                Explore Class 9 →
+            </a>
+
+        </div>
+
+        <div class="class-focus">
+
+            <span>FOCUS</span>
+
+            <h3>Board-Level Readiness</h3>
+
+            <p>
+                Mathematics · Science · SST · English
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- CLASS 10 -->
+
+    <div class="class-row">
+
+        <div class="class-info">
+
+            <span class="class-number">04</span>
+
+            <p class="section-tag">CLASS 10</p>
+
+            <h2>
+                Focused preparation for the board examination.
+            </h2>
+
+            <p>
+                Comprehensive board preparation through challenging
+                questions, competency-based practice and focused
+                exam preparation.
+            </p>
+
+            <a href="{% url 'class_detail' 10 %}" class="class-link">
+                Explore Class 10 →
+            </a>
+
+        </div>
+
+        <div class="class-focus">
+
+            <span>FOCUS</span>
+
+            <h3>Board Examination</h3>
+
+            <p>
+                Mathematics · Science · SST · English
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FOUNDATION BATCH
+========================= -->
+
+<section class="foundation-highlight">
+
+    <div class="foundation-content">
+
+        <p class="section-tag">FOUNDATION PROGRAM</p>
+
+        <h2>
+            Start early. Build a stronger academic base.
+        </h2>
+
+        <p>
+            The Foundation Batch is designed for students who want to
+            strengthen their fundamentals early and build the academic
+            base required for higher-level and competitive examinations.
+            It provides a focused learning environment for students who
+            are ready for consistent learning, regular practice and a
+            disciplined academic approach.
+        </p>
+
+        <p class="foundation-note">
+            A focused program for students who are ready to take on
+            a consistent and structured approach to learning.
+        </p>
+
+    </div>
+
+</section>
+
+
+{% endblock content %}

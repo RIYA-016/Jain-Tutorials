@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jain Tutorials</title>
+
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            <a href="/" class="logo-link">
+
+                <img src="{% static 'core/images/logo.jpeg' %}"
+                     alt="Jain Tutorials Logo">
+
+                <span>Jain Tutorials</span>
+
+            </a>
+        </div>
+
+        <nav class="nav-links">
+            <a href="#">About Us</a>
+            <a href="#">Classes</a>
+            <a href="#">Announcements</a>
+            <a href="{% url 'contact' %}">Contact Us</a>
+        </nav>
+
+        <a href="#" class="login-btn">Login</a>
+
+    </header>
+
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+
+    <footer>
+        <p>© 2026 Jain Tutorials. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'core/js/script.js' %}"></script>
+
+</body>
+</html>

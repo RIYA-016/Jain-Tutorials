@@ -1,0 +1,217 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+
+<section class="class-detail-page">
+
+    <!-- HEADER -->
+    <div class="class-detail-header">
+
+        <p class="section-label">JAIN TUTORIALS</p>
+
+        <h1>{{ class_name }}</h1>
+
+        {% if class_no == 7 %}
+            <p>
+                A strong beginning that builds the fundamentals students
+                need for the academic years ahead.
+            </p>
+
+        {% elif class_no == 8 %}
+            <p>
+                Strengthening concepts and building confidence through
+                regular learning and practice.
+            </p>
+
+        {% elif class_no == 9 %}
+            <p>
+                A focused academic stage where students develop deeper
+                understanding and learn to apply their concepts.
+            </p>
+
+        {% elif class_no == 10 %}
+            <p>
+                Focused learning and consistent practice to help students
+                approach an important academic year with confidence.
+            </p>
+        {% endif %}
+
+    </div>
+
+
+    <!-- CLASS INTRODUCTION -->
+    <div class="class-detail-content">
+
+        {% if class_no == 7 %}
+
+            <div class="class-intro">
+                <p class="section-label">THE FOUNDATION</p>
+
+                <h2>Building the fundamentals.</h2>
+
+                <p>
+                    Class 7 is an important starting point for developing
+                    strong academic fundamentals. We focus on making
+                    concepts clear from the beginning so students can
+                    build confidence as they move towards higher classes.
+                </p>
+            </div>
+
+
+        {% elif class_no == 8 %}
+
+            <div class="class-intro">
+                <p class="section-label">BUILDING ON THE BASICS</p>
+
+                <h2>Strengthening understanding.</h2>
+
+                <p>
+                    Class 8 helps students move beyond the basics and
+                    develop a stronger understanding of their subjects.
+                    Regular practice and clear concepts help students
+                    become more confident learners.
+                </p>
+            </div>
+
+
+        {% elif class_no == 9 %}
+
+            <div class="class-intro">
+                <p class="section-label">A NEW ACADEMIC STAGE</p>
+
+                <h2>Learning with greater depth.</h2>
+
+                <p>
+                    Class 9 brings a more focused academic approach.
+                    Students begin working with concepts that require
+                    deeper understanding, application and consistent
+                    practice.
+                </p>
+            </div>
+
+
+        {% elif class_no == 10 %}
+
+            <div class="class-intro">
+                <p class="section-label">FOCUSED PREPARATION</p>
+
+                <h2>Strengthening concepts with purpose.</h2>
+
+                <p>
+                    Class 10 is an important academic year. Our approach
+                    focuses on strong concepts, regular practice and
+                    helping students become confident in approaching
+                    different types of questions.
+                </p>
+            </div>
+
+        {% endif %}
+
+
+        <!-- SUBJECTS -->
+        <div class="subjects-section">
+
+            <p class="section-label">OUR SUBJECTS</p>
+
+            <h2>Four subjects. One focused approach.</h2>
+
+            <div class="subject-grid">
+
+                <div class="subject-card">
+                    <h3>Mathematics</h3>
+                    <p>
+                        Understand concepts, solve problems and build
+                        confidence through practice.
+                    </p>
+                </div>
+
+                <div class="subject-card">
+                    <h3>Science</h3>
+                    <p>
+                        Focus on understanding concepts and connecting
+                        them with practical examples.
+                    </p>
+                </div>
+
+                <div class="subject-card">
+                    <h3>Social Science</h3>
+                    <p>
+                        Build conceptual clarity and learn to present
+                        answers effectively.
+                    </p>
+                </div>
+
+                <div class="subject-card">
+                    <h3>English</h3>
+                    <p>
+                        Strengthen language, grammar, comprehension
+                        and written expression.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- LEARN PRACTICE GROW -->
+        <div class="learning-approach">
+
+            <p class="section-label">OUR APPROACH</p>
+
+            <h2>Learn. Practice. Grow.</h2>
+
+            <div class="approach-grid">
+
+                <div class="approach-item">
+                    <span>01</span>
+                    <h3>Learn</h3>
+                    <p>
+                        Understand the concept clearly before moving
+                        forward.
+                    </p>
+                </div>
+
+                <div class="approach-item">
+                    <span>02</span>
+                    <h3>Practice</h3>
+                    <p>
+                        Apply what you learn through regular practice
+                        and questions.
+                    </p>
+                </div>
+
+                <div class="approach-item">
+                    <span>03</span>
+                    <h3>Grow</h3>
+                    <p>
+                        Build confidence and gradually become a more
+                        independent learner.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTACT -->
+        <div class="class-detail-contact">
+
+            <h2>Have a question about this class?</h2>
+
+            <p>
+                Get in touch with Jain Tutorials to know more.
+            </p>
+
+            <a href="{% url 'contact' %}" class="class-contact-button">
+                Contact Us
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
