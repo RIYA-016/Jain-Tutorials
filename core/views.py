@@ -55,3 +55,9 @@ def class_detail(request, class_no):
         'class_data': class_data,
         'class_no': class_no,
     })
+
+def about(request):
+    return render(request, 'core/about.html')
+
+def announcements(request):
+    return render(request, 'core/announcements.html')
