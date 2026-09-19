@@ -1,0 +1,104 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'core/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="login-page">
+
+    <div class="login-container">
+
+        <div class="login-header">
+
+            <p class="section-tag">
+                JAIN TUTORIALS PORTAL
+            </p>
+
+            <h1>
+                Welcome Back
+            </h1>
+
+            <p>
+                Login to access your academic portal.
+            </p>
+
+            <p class="login-note">
+                This portal is for registered students and users of Jain Tutorials.
+            </p>
+
+        </div>
+
+
+        <form method="POST" class="login-form">
+
+            {% csrf_token %}
+
+            {% if error %}
+                <div class="login-error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+
+            <div class="login-field">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="login-field">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button type="submit" class="login-submit">
+                Login
+            </button>
+
+        </form>
+
+
+        <div class="login-help">
+
+            <p>
+                Having trouble logging in?
+                <a href="{% url 'contact' %}">
+                    Contact Us
+                </a>
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
