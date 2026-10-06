@@ -1,0 +1,300 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="attendance-page">
+
+    <!-- PAGE HEADING -->
+
+    <div class="page-heading">
+
+        <p class="portal-page-label">
+            ATTENDANCE
+        </p>
+
+        <h1>
+            Your Attendance
+        </h1>
+
+        <p>
+            View your attendance from the beginning of the academic session.
+        </p>
+
+    </div>
+
+
+    <!-- OVERALL ATTENDANCE -->
+
+    <div class="attendance-summary">
+
+        <div class="summary-card">
+
+            <span>
+                Overall Attendance
+            </span>
+
+            <strong>
+                {{ attendance_percentage }}%
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Present
+            </span>
+
+            <strong>
+                {{ present_classes }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Absent
+            </span>
+
+            <strong>
+                {{ absent_classes }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Total Classes
+            </span>
+
+            <strong>
+                {{ total_classes }}
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- MONTHLY ATTENDANCE -->
+
+    <div class="attendance-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Monthly Attendance
+            </h2>
+
+            <p>
+                Your attendance summary for each month.
+            </p>
+
+        </div>
+
+
+        {% if monthly_data %}
+
+            <div class="monthly-attendance-list">
+
+                {% for month in monthly_data %}
+
+                    <div class="monthly-attendance-card">
+
+                        <div class="monthly-attendance-info">
+
+                            <h3>
+                                {{ month.month_name }}
+                            </h3>
+
+                            <span>
+                                {{ month.total }}
+                                {% if month.total == 1 %}
+                                    class
+                                {% else %}
+                                    classes
+                                {% endif %}
+                            </span>
+
+                        </div>
+
+
+                        <div class="monthly-attendance-stats">
+
+                            <div>
+
+                                <span>
+                                    Present
+                                </span>
+
+                                <strong>
+                                    {{ month.present }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Absent
+                                </span>
+
+                                <strong>
+                                    {{ month.absent }}
+                                </strong>
+
+                            </div>
+
+
+                            <div>
+
+                                <span>
+                                    Attendance
+                                </span>
+
+                                <strong>
+                                    {{ month.percentage }}%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No monthly attendance yet
+                </h3>
+
+                <p>
+                    Your monthly attendance will appear here once classes are recorded.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ATTENDANCE HISTORY -->
+
+    <div class="attendance-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Attendance History
+            </h2>
+
+            <p>
+                Your recorded class attendance will appear here.
+            </p>
+
+        </div>
+
+
+        {% if attendance_records %}
+
+            <div class="attendance-list">
+
+                {% for record in attendance_records %}
+
+                    <a
+                        href="{% url 'student_attendance_detail' record.id %}"
+                        class="attendance-record"
+                    >
+
+                        <!-- DATE AND TIME -->
+
+                        <div class="attendance-date">
+
+                            <strong>
+                                {{ record.session.date|date:"d M Y" }}
+                            </strong>
+
+                            <span>
+                                {{ record.session.start_time|time:"g:i A" }}
+                                -
+                                {{ record.session.end_time|time:"g:i A" }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- TOPIC AND BATCH -->
+
+                        <div class="attendance-topic">
+
+                            <strong>
+                                {{ record.session.topics_covered|default:"Class Session" }}
+                            </strong>
+
+                            <span>
+                                {{ record.session.batch.name }}
+                            </span>
+
+                        </div>
+
+
+                        <!-- ATTENDANCE STATUS -->
+
+                        <div class="attendance-status">
+
+                            {% if record.status == "PRESENT" %}
+
+                                <span class="status-present">
+                                    Present
+                                </span>
+
+                            {% else %}
+
+                                <span class="status-absent">
+                                    Absent
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No attendance records yet
+                </h3>
+
+                <p>
+                    Your attendance will appear here once classes are recorded.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

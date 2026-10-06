@@ -53,9 +53,6 @@
     color: #587595;
 }
 
-
-/* Registered User Note */
-
 .login-note {
     margin-top: 10px !important;
     font-size: 13px !important;
@@ -107,6 +104,51 @@
 .login-field input:focus {
     border-color: #173f6b;
     box-shadow: 0 0 0 3px rgba(23, 63, 107, 0.08);
+}
+
+
+/* =========================================
+   PASSWORD FIELD + EYE ICON
+   ========================================= */
+
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.password-wrapper input {
+    padding-right: 52px;
+}
+
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #173f6b;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.eye-icon {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.password-toggle:hover {
+    color: #102f52;
+}
+
+.password-toggle:focus {
+    outline: none;
 }
 
 
@@ -188,8 +230,9 @@
     }
 
     .login-container {
-        padding: 40px 25px;
-        border-radius: 12px;
+    width: 100%;
+    max-width: 470px;
+    box-sizing: border-box;
     }
 
     .login-header h1 {
@@ -206,6 +249,7 @@
 
     .login-field input {
         padding: 13px 14px;
+        padding-right: 48px;
     }
 
     .login-submit {

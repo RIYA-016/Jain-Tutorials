@@ -1,0 +1,113 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="study-material-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">STUDY MATERIAL</p>
+        <h1>Study Material</h1>
+        <p>Access notes, worksheets and question papers for your classes.</p>
+    </div>
+
+
+    <div class="study-material-section">
+
+        <div class="section-heading">
+            <h2>Available Material</h2>
+            <p>Study material available for your enrolled batches.</p>
+        </div>
+
+
+        {% if study_materials %}
+
+            <div class="study-material-list">
+
+                {% for material in study_materials %}
+
+                    <div class="study-material-card">
+
+                        <div class="material-icon">
+                            {% if material.material_type == "NOTES" %}
+                                N
+                            {% elif material.material_type == "WORKSHEET" %}
+                                W
+                            {% elif material.material_type == "QUESTION_PAPER" %}
+                                Q
+                            {% else %}
+                                F
+                            {% endif %}
+                        </div>
+
+
+                        <div class="material-main">
+
+                            <span class="material-subject">
+                                {{ material.subject.name }}
+                            </span>
+
+                            <h3>
+                                {{ material.title }}
+                            </h3>
+
+                            {% if material.description %}
+                                <p>
+                                    {{ material.description }}
+                                </p>
+                            {% endif %}
+
+                            <div class="material-meta">
+
+                                <span>
+                                    {{ material.get_material_type_display }}
+                                </span>
+
+                                <span>
+                                    {{ material.uploaded_at|date:"d M Y" }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="material-action">
+
+                            <a
+                                href="{{ material.file.url }}"
+                                target="_blank"
+                                rel="noopener"
+                                class="material-view-btn"
+                            >
+                                View Material
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>No study material yet</h3>
+
+                <p>
+                    Notes, worksheets and question papers will appear here
+                    once they are uploaded for your batch.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

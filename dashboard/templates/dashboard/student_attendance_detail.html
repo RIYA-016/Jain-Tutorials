@@ -1,0 +1,98 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="attendance-detail-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">ATTENDANCE</p>
+        <h1>Attendance Details</h1>
+        <p>View the details of your recorded class attendance.</p>
+    </div>
+
+
+    <div class="attendance-detail-card">
+
+        <div class="detail-header">
+
+            <div>
+                <span class="detail-label">DATE</span>
+
+                <h2>
+                    {{ attendance_record.session.date|date:"d F Y" }}
+                </h2>
+            </div>
+
+            <div>
+                {% if attendance_record.status == "PRESENT" %}
+                    <span class="status-present">Present</span>
+                {% else %}
+                    <span class="status-absent">Absent</span>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        <div class="detail-grid">
+
+            <div class="detail-item">
+                <span>Time</span>
+
+                <strong>
+                    {{ attendance_record.session.start_time|time:"g:i A" }}
+                    -
+                    {{ attendance_record.session.end_time|time:"g:i A" }}
+                </strong>
+            </div>
+
+
+            <div class="detail-item">
+                <span>Batch</span>
+
+                <strong>
+                    {{ attendance_record.session.batch.name }}
+                </strong>
+            </div>
+
+
+            <div class="detail-item">
+                <span>Topic Covered</span>
+
+                <strong>
+                    {{ attendance_record.session.topics_covered|default:"No topic recorded" }}
+                </strong>
+            </div>
+
+
+            <div class="detail-item">
+                <span>Marked By</span>
+
+                <strong>
+                    {% if attendance_record.session.marked_by %}
+                        {{ attendance_record.session.marked_by.get_full_name|default:attendance_record.session.marked_by.username }}
+                    {% else %}
+                        Not available
+                    {% endif %}
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="detail-footer">
+
+            <a
+                href="{% url 'student_attendance' %}"
+                class="back-attendance-btn"
+            >
+                Back to Attendance
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

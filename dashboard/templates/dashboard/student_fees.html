@@ -1,0 +1,168 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="fees-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">FEES</p>
+        <h1>Your Fees</h1>
+        <p>View your fee details and installment payment status.</p>
+    </div>
+
+
+    {% if fee_account %}
+
+        <div class="fees-summary">
+
+            <div class="summary-card">
+                <span>Total Fees</span>
+                <strong>₹{{ total_fee }}</strong>
+            </div>
+
+            <div class="summary-card">
+                <span>Total Paid</span>
+                <strong>₹{{ total_paid }}</strong>
+            </div>
+
+            <div class="summary-card">
+                <span>Remaining</span>
+                <strong>₹{{ total_remaining }}</strong>
+            </div>
+
+        </div>
+
+
+        <div class="fees-section">
+
+            <div class="section-heading">
+                <h2>Installment Details</h2>
+                <p>Your fee installments and payment status.</p>
+            </div>
+
+
+            {% if installments %}
+
+                <div class="installments-list">
+
+                    {% for installment in installments %}
+
+                        <div class="installment-card">
+
+                            <div class="installment-main">
+
+                                <span class="installment-number">
+                                    INSTALLMENT {{ installment.installment_number }}
+                                </span>
+
+                                <h3>
+                                    ₹{{ installment.amount_due }}
+                                </h3>
+
+
+                                {% if installment.payment_plan == "EXACT_DATE" %}
+
+                                    <p>
+                                        Expected payment date:
+                                        <strong>
+                                            {{ installment.expected_date|date:"d M Y" }}
+                                        </strong>
+                                    </p>
+
+                                {% elif installment.payment_plan == "MONTH" %}
+
+                                    <p>
+                                        Expected payment month:
+                                        <strong>
+                                            {{ installment.expected_month|date:"F Y" }}
+                                        </strong>
+                                    </p>
+
+                                {% else %}
+
+                                    <p>
+                                        Payment expectation not specified.
+                                    </p>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="installment-payment">
+
+                                <span>Amount Paid</span>
+
+                                <strong>
+                                    ₹{{ installment.amount_paid }}
+                                </strong>
+
+
+                                {% if installment.amount_paid >= installment.amount_due %}
+
+                                    <span class="fee-status fee-paid">
+                                        Paid
+                                    </span>
+
+                                {% elif installment.amount_paid > 0 %}
+
+                                    <span class="fee-status fee-partial">
+                                        Partially Paid
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="fee-status fee-pending">
+                                        Pending
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <h3>No installments yet</h3>
+
+                    <p>
+                        Your fee installment details will appear here
+                        once they are added.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="fees-section">
+
+            <div class="empty-state">
+
+                <h3>No fee details available</h3>
+
+                <p>
+                    Your fee information has not been added yet.
+                </p>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

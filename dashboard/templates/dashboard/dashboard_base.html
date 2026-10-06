@@ -1,0 +1,443 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jain Tutorials Portal</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'dashboard/css/portal.css' %}"
+    >
+
+    {% block extra_css %}
+    {% endblock %}
+</head>
+
+
+<body>
+
+<div class="portal-layout">
+
+
+    <!-- ========================= -->
+    <!-- DESKTOP SIDEBAR -->
+    <!-- ========================= -->
+
+    <aside class="portal-sidebar">
+
+        <div class="portal-brand">
+
+            <img
+                src="{% static 'core/images/logo.jpeg' %}"
+                alt="Jain Tutorials"
+            >
+
+            <span>
+                Jain Tutorials
+            </span>
+
+        </div>
+
+
+        <nav class="portal-navigation">
+
+            <a href="{% url 'student_dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'student_attendance' %}">
+                Attendance
+            </a>
+
+            <a href="{% url 'student_marks' %}">
+                Marks
+            </a>
+        
+            <a href="{% url 'student_fees' %}">
+                Fees
+            </a>
+
+            <a href="{% url 'student_study_material' %}">
+                Study Material
+            </a>
+
+            <a href="{% url 'student_announcements' %}">
+                Announcements
+            </a>
+
+           <a href="{% url 'student_profile' %}">
+                Profile
+            </a>
+
+        </nav>
+
+
+        <div class="portal-sidebar-bottom">
+
+            <a href="{% url 'logout' %}">
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- ========================= -->
+    <!-- MOBILE HEADER -->
+    <!-- ========================= -->
+
+    <header class="mobile-topbar">
+
+        <div class="mobile-brand">
+
+            <img
+                src="{% static 'core/images/logo.jpeg' %}"
+                alt="Jain Tutorials"
+            >
+
+            <span>
+                Jain Tutorials
+            </span>
+
+        </div>
+
+
+        <button
+            class="mobile-menu-button"
+            id="mobile-menu-button"
+            type="button"
+            aria-label="Open navigation"
+            aria-expanded="false"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </button>
+
+    </header>
+
+
+
+    <!-- ========================= -->
+    <!-- MOBILE MENU -->
+    <!-- ========================= -->
+
+    <div
+        class="mobile-menu"
+        id="mobile-menu"
+    >
+
+        <div class="mobile-menu-header">
+
+            <div>
+
+                <p>
+                    STUDENT PORTAL
+                </p>
+
+                <strong>
+                    {{ request.user.get_full_name|default:request.user.username }}
+                </strong>
+
+            </div>
+
+
+            <button
+                class="mobile-menu-close"
+                id="mobile-menu-close"
+                type="button"
+                aria-label="Close navigation"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <nav class="mobile-navigation">
+
+            <a href="{% url 'student_dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'student_attendance' %}">
+                Attendance
+            </a>
+
+            <a href="{% url 'student_marks' %}">
+                Marks
+            </a>
+                
+            <a href="{% url 'student_fees' %}">
+                Fees
+            </a>
+
+            <a href="{% url 'student_study_material' %}">
+                Study Material
+            </a>
+
+            <a href="{% url 'student_announcements' %}">
+                Announcements
+            </a>
+
+            <a href="{% url 'student_profile' %}">
+                Profile
+            </a>
+
+            <a
+                href="{% url 'logout' %}"
+                class="mobile-logout"
+            >
+                Logout
+            </a>
+
+        </nav>
+
+    </div>
+
+
+
+    <!-- ========================= -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================= -->
+
+    <main class="portal-main">
+
+
+        <!-- DESKTOP TOPBAR -->
+
+        <header class="portal-topbar">
+
+            <div>
+
+                <p class="portal-page-label">
+                    STUDENT PORTAL
+                </p>
+
+            </div>
+
+
+            <div class="portal-user">
+
+                {{ request.user.get_full_name|default:request.user.username }}
+
+            </div>
+
+        </header>
+
+
+
+        <!-- PAGE CONTENT -->
+
+        <div class="portal-content">
+
+            {% block content %}
+            {% endblock content %}
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+
+<!-- ========================= -->
+<!-- MOBILE BOTTOM NAVIGATION -->
+<!-- ========================= -->
+
+<nav class="mobile-bottom-nav">
+
+    <a href="{% url 'student_dashboard' %}">
+
+        <span class="mobile-nav-icon">
+            ⌂
+        </span>
+
+        <span>
+            Home
+        </span>
+
+    </a>
+
+
+    <a href="{% url 'student_attendance' %}">
+
+        <span class="mobile-nav-icon">
+            ✓
+        </span>
+
+        <span>
+            Attendance
+        </span>
+
+    </a>
+
+
+    <a href="{% url 'student_marks' %}">
+
+        <span class="mobile-nav-icon">
+            %
+        </span>
+
+        <span>
+            Marks
+        </span>
+
+    </a>
+
+
+    <button
+        type="button"
+        id="mobile-more-button"
+    >
+
+        <span class="mobile-nav-icon">
+            ☰
+        </span>
+
+        <span>
+            More
+        </span>
+
+    </button>
+
+</nav>
+
+
+
+<!-- ========================= -->
+<!-- MOBILE MENU JAVASCRIPT -->
+<!-- ========================= -->
+
+<script>
+
+    const mobileMenuButton =
+        document.getElementById("mobile-menu-button");
+
+    const mobileMenuClose =
+        document.getElementById("mobile-menu-close");
+
+    const mobileMenu =
+        document.getElementById("mobile-menu");
+
+    const mobileMoreButton =
+        document.getElementById("mobile-more-button");
+
+
+    function openMobileMenu() {
+
+        if (!mobileMenu) {
+            return;
+        }
+
+        mobileMenu.classList.add(
+            "mobile-menu-open"
+        );
+
+        if (mobileMenuButton) {
+
+            mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "true"
+            );
+
+        }
+
+        document.body.classList.add(
+            "mobile-menu-active"
+        );
+
+    }
+
+
+    function closeMobileMenu() {
+
+        if (!mobileMenu) {
+            return;
+        }
+
+        mobileMenu.classList.remove(
+            "mobile-menu-open"
+        );
+
+        if (mobileMenuButton) {
+
+            mobileMenuButton.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        }
+
+        document.body.classList.remove(
+            "mobile-menu-active"
+        );
+
+    }
+
+
+    if (mobileMenuButton) {
+
+        mobileMenuButton.addEventListener(
+            "click",
+            openMobileMenu
+        );
+
+    }
+
+
+    if (mobileMenuClose) {
+
+        mobileMenuClose.addEventListener(
+            "click",
+            closeMobileMenu
+        );
+
+    }
+
+
+    if (mobileMoreButton) {
+
+        mobileMoreButton.addEventListener(
+            "click",
+            openMobileMenu
+        );
+
+    }
+
+
+    document.querySelectorAll(
+        ".mobile-navigation a"
+    ).forEach(function(link) {
+
+        link.addEventListener(
+            "click",
+            closeMobileMenu
+        );
+
+    });
+
+</script>
+
+
+<script src="{% static 'core/js/script.js' %}"></script>
+
+
+{% block extra_js %}
+{% endblock %}
+
+
+</body>
+
+</html>

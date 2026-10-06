@@ -1,0 +1,98 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="announcements-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">ANNOUNCEMENTS</p>
+
+        <h1>Announcements</h1>
+
+        <p>
+            Stay updated with the latest information from Jain Tutorials.
+        </p>
+    </div>
+
+
+    <div class="announcements-section">
+
+        <div class="section-heading">
+
+            <h2>Latest Updates</h2>
+
+            <p>
+                Important announcements for you and your batch.
+            </p>
+
+        </div>
+
+
+        {% if announcements %}
+
+            <div class="announcements-list">
+
+                {% for announcement in announcements %}
+
+                    <article class="announcement-card">
+
+                        <div class="announcement-card-header">
+
+                            <div>
+                                <span class="announcement-type">
+                                    {% if announcement.batch %}
+                                        {{ announcement.batch.name }}
+                                    {% else %}
+                                        JAIN TUTORIALS
+                                    {% endif %}
+                                </span>
+
+                                <h3>
+                                    {{ announcement.title }}
+                                </h3>
+                            </div>
+
+                            <span class="announcement-date">
+                                {{ announcement.published_at|date:"d M Y" }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="announcement-card-content">
+
+                            <p>
+                                {{ announcement.content }}
+                            </p>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No announcements yet
+                </h3>
+
+                <p>
+                    Important updates from Jain Tutorials will appear here
+                    when they are published.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

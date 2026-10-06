@@ -1,0 +1,124 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="profile-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">MY PROFILE</p>
+        <h1>Student Profile</h1>
+        <p>View your personal and academic information.</p>
+    </div>
+
+    <div class="profile-layout">
+
+        <!-- Personal Information -->
+        <section class="profile-section">
+
+            <div class="profile-section-heading">
+                <h2>Personal Information</h2>
+                <p>Your registered personal details</p>
+            </div>
+
+            <div class="profile-details">
+
+                <div class="profile-detail">
+                    <span class="profile-label">Full Name</span>
+                    <span class="profile-value">
+                        {{ student.user.get_full_name|default:student.user.username }}
+                    </span>
+                </div>
+
+                <div class="profile-detail">
+                    <span class="profile-label">Username</span>
+                    <span class="profile-value">
+                        {{ student.user.username }}
+                    </span>
+                </div>
+
+                <div class="profile-detail">
+                    <span class="profile-label">Phone Number</span>
+                    <span class="profile-value">
+                        {{ student.phone_number|default:"Not provided" }}
+                    </span>
+                </div>
+
+                <div class="profile-detail">
+                    <span class="profile-label">Parent / Guardian</span>
+                    <span class="profile-value">
+                        {{ student.parent_name|default:"Not provided" }}
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Academic Information -->
+        <section class="profile-section">
+
+            <div class="profile-section-heading">
+                <h2>Academic Information</h2>
+                <p>Your current class and batch details</p>
+            </div>
+
+            <div class="profile-details">
+
+                <div class="profile-detail">
+                    <span class="profile-label">Roll Number</span>
+                    <span class="profile-value">
+                        {{ student.roll_number|default:"Not assigned" }}
+                    </span>
+                </div>
+
+                {% for enrollment in enrollments %}
+
+                <div class="profile-detail">
+                    <span class="profile-label">Class</span>
+                    <span class="profile-value">
+                        Class {{ enrollment.batch.class_level }}
+                    </span>
+                </div>
+
+                <div class="profile-detail">
+                    <span class="profile-label">Batch</span>
+                    <span class="profile-value">
+                        {{ enrollment.batch.name }}
+                    </span>
+                </div>
+
+                <div class="profile-detail">
+                    <span class="profile-label">Academic Year</span>
+                    <span class="profile-value">
+                        {{ enrollment.batch.academic_year }}
+                    </span>
+                </div>
+
+                {% empty %}
+
+                <div class="profile-detail">
+                    <span class="profile-label">Class</span>
+                    <span class="profile-value">
+                        Not assigned
+                    </span>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="profile-note">
+        <strong>Need to update your information?</strong>
+        <p>
+            Please contact Jain Tutorials administration to update your registered details.
+        </p>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,311 @@
+{% extends "dashboard/dashboard_base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'dashboard/css/dashboard.css' %}"
+>
+{% endblock %}
+
+{% block content %}
+
+<section class="student-dashboard">
+
+    <!-- DASHBOARD HEADER -->
+
+    <div class="dashboard-header">
+
+        <p class="dashboard-tag">
+            JAIN TUTORIALS PORTAL
+        </p>
+
+        <h1>
+            Welcome,
+            {{ student.user.first_name|default:student.user.username }}
+        </h1>
+
+        {% for enrollment in enrollments %}
+
+            <p class="student-class">
+                Class {{ enrollment.batch.class_level }}
+                ·
+                {{ enrollment.batch.name }}
+            </p>
+
+        {% endfor %}
+
+        <p class="dashboard-intro">
+            Here's an overview of your academic progress.
+        </p>
+
+    </div>
+
+
+    <!-- SUMMARY CARDS -->
+
+    <div class="dashboard-cards">
+
+        <!-- ATTENDANCE -->
+
+        <a
+            href="{% url 'student_attendance' %}"
+            class="dashboard-card dashboard-card-link"
+        >
+
+            <span class="card-label">
+                ATTENDANCE
+            </span>
+
+            <h2>
+                {{ attendance_percentage }}%
+            </h2>
+
+            <p>
+                {{ present_classes }}
+                of
+                {{ total_classes }}
+                classes
+            </p>
+
+            <span class="card-action">
+                View Attendance →
+            </span>
+
+        </a>
+
+
+        <!-- TESTS COMPLETED -->
+
+        <a
+            href="{% url 'student_marks' %}"
+            class="dashboard-card dashboard-card-link"
+        >
+
+            <span class="card-label">
+                TESTS COMPLETED
+            </span>
+
+            <h2>
+                {{ marks|length }}
+            </h2>
+
+            <p>
+                Tests completed
+            </p>
+
+            <span class="card-action">
+                View Marks →
+            </span>
+
+        </a>
+
+
+        <!-- AVERAGE MARKS -->
+
+        <a
+            href="{% url 'student_marks' %}"
+            class="dashboard-card dashboard-card-link"
+        >
+
+            <span class="card-label">
+                AVERAGE MARKS
+            </span>
+
+            <h2>
+                {{ average_marks_percentage }}%
+            </h2>
+
+            <p>
+                Overall performance
+            </p>
+
+            <span class="card-action">
+                View Performance →
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <!-- RECENT RESULTS -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Recent Results
+                </h2>
+
+                <span>
+                    Your latest test performance
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {% if marks %}
+
+            <div class="dashboard-table">
+
+                <div class="table-row table-header">
+
+                    <span>
+                        Test
+                    </span>
+
+                    <span>
+                        Subject
+                    </span>
+
+                    <span>
+                        Date
+                    </span>
+
+                    <span>
+                        Marks
+                    </span>
+
+                </div>
+
+
+                {% for mark in marks|slice:":5" %}
+
+                    <div class="table-row">
+
+                        <span>
+                            {{ mark.test.title }}
+                        </span>
+
+                        <span>
+                            {{ mark.test.subject.name }}
+                        </span>
+
+                        <span>
+                            {{ mark.test.test_date|date:"d M Y" }}
+                        </span>
+
+                        <span>
+                            {{ mark.marks_obtained }}
+                            /
+                            {{ mark.test.max_marks }}
+                        </span>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="dashboard-section-footer">
+
+                <a
+                    href="{% url 'student_marks' %}"
+                    class="dashboard-view-link"
+                >
+                    View All Marks →
+                </a>
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No test results yet
+                </h3>
+
+                <p>
+                    Your test results will appear here once marks are recorded.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ANNOUNCEMENTS -->
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <h2>
+                    Announcements
+                </h2>
+
+                <span>
+                    Latest updates from Jain Tutorials
+                </span>
+
+            </div>
+
+        </div>
+
+
+        {% if announcements %}
+
+            <div class="announcement-list">
+
+                {% for announcement in announcements %}
+
+                    <div class="announcement-item">
+
+                        <div class="announcement-content">
+
+                            <h3>
+                                {{ announcement.title }}
+                            </h3>
+
+                            <p>
+                                {{ announcement.content }}
+                            </p>
+
+                        </div>
+
+                        <small>
+                            {{ announcement.published_at|date:"d M Y" }}
+                        </small>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No announcements yet
+                </h3>
+
+                <p>
+                    Important updates from Jain Tutorials will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+</section>
+
+{% endblock %}

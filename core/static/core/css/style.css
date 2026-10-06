@@ -2879,3 +2879,74 @@ footer {
         font-size: 30px;
     }
 }
+
+/* =========================================
+   MOBILE NAVBAR
+   ========================================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        height: auto;
+        min-height: 0;
+        padding: 14px 20px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px 0;
+    }
+
+    /* Logo area */
+
+    .logo {
+        width: auto;
+        flex: 1;
+    }
+
+    .logo-link {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .logo-link img {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+    }
+
+    .logo-link span {
+        font-size: 22px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    /* Login button */
+
+    .login-btn {
+        position: static;
+        flex-shrink: 0;
+        padding: 9px 16px;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+
+    /* Navigation links */
+
+    .nav-links {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        padding-top: 4px;
+        border-top: 1px solid #e1e7ee;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+        line-height: 1;
+        padding: 8px 9px;
+        white-space: nowrap;
+    }
+}

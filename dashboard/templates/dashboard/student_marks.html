@@ -1,0 +1,161 @@
+{% extends "dashboard/dashboard_base.html" %}
+
+{% block content %}
+
+<div class="marks-page">
+
+    <!-- PAGE HEADING -->
+
+    <div class="page-heading">
+
+        <p class="portal-page-label">
+            MARKS
+        </p>
+
+        <h1>
+            Your Marks
+        </h1>
+
+        <p>
+            View your performance in tutorial tests.
+        </p>
+
+    </div>
+
+
+    <!-- PERFORMANCE SUMMARY -->
+
+    <div class="marks-summary">
+
+        <div class="summary-card">
+
+            <span>
+                Tests Completed
+            </span>
+
+            <strong>
+                {{ total_tests }}
+            </strong>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span>
+                Overall Average
+            </span>
+
+            <strong>
+                {{ average_percentage }}%
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- TUTORIAL TEST MARKS -->
+
+    <div class="marks-section">
+
+        <div class="section-heading">
+
+            <h2>
+                Tutorial Test Marks
+            </h2>
+
+            <p>
+                Your marks from tests conducted by Jain Tutorials.
+            </p>
+
+        </div>
+
+
+        {% if marks %}
+
+            <div class="marks-list">
+
+                {% for mark in marks %}
+
+                    <div class="mark-card">
+
+                        <div class="mark-main">
+
+                            <div class="mark-subject">
+                                {{ mark.test.subject.name }}
+                            </div>
+
+                            <h3>
+                                {{ mark.test.title }}
+                            </h3>
+
+                            <p>
+                                {% if mark.test.topic %}
+                                    {{ mark.test.topic }}
+                                {% else %}
+                                    Topic not specified
+                                {% endif %}
+                            </p>
+
+                        </div>
+
+
+                        <div class="mark-date">
+
+                            <span>
+                                Test Date
+                            </span>
+
+                            <strong>
+                                {{ mark.test.test_date|date:"d M Y" }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="mark-score">
+
+                            <span>
+                                Score
+                            </span>
+
+                            <strong>
+                                {{ mark.marks_obtained }}
+                                /
+                                {{ mark.test.max_marks }}
+                            </strong>
+
+                            <small>
+                                {% widthratio mark.marks_obtained mark.test.max_marks 100 %}%
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>
+                    No test marks yet
+                </h3>
+
+                <p>
+                    Your tutorial test marks will appear here once tests are recorded.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
