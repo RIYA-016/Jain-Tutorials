@@ -1,0 +1,123 @@
+{% extends "dashboard/faculty_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="faculty-page faculty-tests-page">
+
+    <div class="page-heading">
+        <div>
+            <p class="portal-page-label">ACADEMICS</p>
+            <h1>Create Test</h1>
+            <p>Add a test for one of your assigned batches.</p>
+        </div>
+
+        <a href="{% url 'faculty_tests' %}"
+           class="faculty-secondary-button">
+            Back to Tests
+        </a>
+    </div>
+
+    <section class="dashboard-section faculty-test-form-section">
+
+        {% if errors %}
+            <div class="faculty-alert" role="alert">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" class="faculty-test-form">
+            {% csrf_token %}
+
+            <div class="faculty-form-group">
+                <label for="batch">Batch</label>
+
+                <select id="batch"
+                        name="batch"
+                        required
+                        onchange="window.location.href='?batch='+this.value">
+                    <option value="">Select batch</option>
+
+                    {% for batch in batches %}
+                        <option value="{{ batch.id }}"
+                            {% if selected_batch_id|stringformat:"s" == batch.id|stringformat:"s" %}selected{% endif %}>
+                            {{ batch.name }} — Class {{ batch.class_level }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="faculty-form-group">
+                <label for="subject">Subject</label>
+
+                <select id="subject" name="subject" required>
+                    <option value="">Select subject</option>
+
+                    {% for subject in subjects %}
+                        <option value="{{ subject.id }}"
+                            {% if form_data.subject|stringformat:"s" == subject.id|stringformat:"s" %}selected{% endif %}>
+                            {{ subject.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                {% if selected_batch_id and not subjects %}
+                    <p>No subjects are configured for this class yet.</p>
+                {% endif %}
+            </div>
+
+            <div class="faculty-form-group">
+                <label for="title">Test title</label>
+
+                <input type="text"
+                       id="title"
+                       name="title"
+                       maxlength="150"
+                       required
+                       value="{{ form_data.title|default:'' }}"
+                       placeholder="e.g. Chapter Test 1">
+            </div>
+
+            <div class="faculty-form-group">
+                <label for="topic">Topic (optional)</label>
+
+                <input type="text"
+                       id="topic"
+                       name="topic"
+                       maxlength="200"
+                       value="{{ form_data.topic|default:'' }}"
+                       placeholder="e.g. Linear Equations">
+            </div>
+
+            <div class="faculty-form-group">
+                <label for="test_date">Test date</label>
+
+                <input type="date"
+                       id="test_date"
+                       name="test_date"
+                       required
+                       value="{{ form_data.test_date|default:'' }}">
+            </div>
+
+            <div class="faculty-form-group">
+                <label for="max_marks">Maximum marks</label>
+
+                <input type="number"
+                       id="max_marks"
+                       name="max_marks"
+                       min="1"
+                       step="1"
+                       required
+                       value="{{ form_data.max_marks|default:'' }}"
+                       placeholder="e.g. 25">
+            </div>
+
+            <button type="submit" class="faculty-primary-button">
+                Create Test &amp; Enter Marks
+            </button>
+        </form>
+
+    </section>
+</div>
+{% endblock %}

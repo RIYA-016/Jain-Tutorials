@@ -1,0 +1,165 @@
+
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Admin Dashboard | Jain Tutorials{% endblock %}
+
+{% block content %}
+<div class="jt-dashboard">
+
+    <section class="jt-welcome">
+        <div>
+            <p class="jt-eyebrow">ADMINISTRATION WORKSPACE</p>
+            <h1>Welcome back, {{ user.get_short_name|default:user.username }}!</h1>
+            <p class="jt-welcome-description">
+                Manage students, academics, attendance and fees from one place.
+            </p>
+        </div>
+
+        <a class="jt-primary-button" href="{% url 'admin:academics_enrollment_add' %}">
+            + Add Enrollment
+        </a>
+    </section>
+
+    <section class="jt-section">
+        <div class="jt-section-heading">
+            <div>
+                <h2>Management Centre</h2>
+                <p>Choose an area to manage your tutorial operations.</p>
+            </div>
+        </div>
+
+        <div class="jt-management-grid">
+
+            <a class="jt-management-card" href="{% url 'admin:accounts_user_changelist' %}">
+                <span class="jt-card-icon jt-icon-blue">
+                    <span aria-hidden="true">♟</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Users &amp; Staff</strong>
+                    <span>Manage user accounts and access.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_studentprofile_changelist' %}">
+                <span class="jt-card-icon jt-icon-purple">
+                    <span aria-hidden="true">▣</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Student Profiles</strong>
+                    <span>View and manage student details.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_batch_changelist' %}">
+                <span class="jt-card-icon jt-icon-green">
+                    <span aria-hidden="true">♜</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Batches &amp; Enrollments</strong>
+                    <span>Organize classes and student enrollment.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_subject_changelist' %}">
+                <span class="jt-card-icon jt-icon-orange">
+                    <span aria-hidden="true">☷</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Subjects &amp; Tests</strong>
+                    <span>Manage subjects, tests and study material.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_attendancerecord_changelist' %}">
+                <span class="jt-card-icon jt-icon-teal">
+                    <span aria-hidden="true">✓</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Attendance</strong>
+                    <span>Review attendance records and sessions.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_mark_changelist' %}">
+                <span class="jt-card-icon jt-icon-blue">
+                    <span aria-hidden="true">▥</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Marks &amp; Results</strong>
+                    <span>Manage marks and academic performance.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_feeaccount_changelist' %}">
+                <span class="jt-card-icon jt-icon-green">
+                    <span aria-hidden="true">₹</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Fee Accounts</strong>
+                    <span>Manage fees and payment accounts.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+            <a class="jt-management-card" href="{% url 'admin:academics_announcement_changelist' %}">
+                <span class="jt-card-icon jt-icon-purple">
+                    <span aria-hidden="true">✉</span>
+                </span>
+                <span class="jt-card-content">
+                    <strong>Announcements</strong>
+                    <span>Manage notices for students and faculty.</span>
+                </span>
+                <span class="jt-card-arrow" aria-hidden="true">↗</span>
+            </a>
+
+        </div>
+    </section>
+
+    <section class="jt-section jt-quick-section">
+        <div class="jt-section-heading">
+            <div>
+                <h2>Quick Actions</h2>
+                <p>Shortcuts to common administrative tasks.</p>
+            </div>
+        </div>
+
+        <div class="jt-quick-actions">
+            <a href="{% url 'admin:academics_enrollment_add' %}">
+                <span class="jt-quick-symbol" aria-hidden="true">+</span>
+                <span>Add Enrollment</span>
+            </a>
+
+            <a href="{% url 'admin:academics_studentprofile_add' %}">
+                <span class="jt-quick-symbol" aria-hidden="true">+</span>
+                <span>Add Student Profile</span>
+            </a>
+
+            <a href="{% url 'admin:academics_batch_changelist' %}">
+                <span class="jt-quick-symbol" aria-hidden="true">↗</span>
+                <span>Manage Batches</span>
+            </a>
+
+            <a href="{% url 'admin:academics_subject_changelist' %}">
+                <span class="jt-quick-symbol" aria-hidden="true">↗</span>
+                <span>Manage Subjects</span>
+            </a>
+        </div>
+    </section>
+
+    <section class="jt-footer-note">
+        <div>
+            <strong>Jain Tutorials</strong>
+            <p>Your central workspace for academic administration.</p>
+        </div>
+        <a href="{% url 'admin:index' %}">Open standard Django Admin →</a>
+    </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,191 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Jain Tutorials</title>
+    <link rel="stylesheet" href="{% static 'dashboard/css/portal.css' %}">
+
+    <style>
+        .faculty-profile-page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 20px;
+        }
+
+        .faculty-profile-header {
+            margin-bottom: 24px;
+        }
+
+        .faculty-profile-header h1 {
+            margin-bottom: 8px;
+        }
+
+        .faculty-profile-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        }
+
+        .faculty-profile-intro {
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .faculty-profile-intro h2 {
+            margin: 0 0 6px;
+        }
+
+        .faculty-profile-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .faculty-profile-field label {
+            display: block;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .faculty-profile-field p {
+            margin: 0;
+            color: #111827;
+            font-size: 15px;
+            overflow-wrap: anywhere;
+        }
+
+        .faculty-profile-notice {
+            margin-top: 24px;
+            padding: 14px 16px;
+            border-radius: 8px;
+            background: #f3f4f6;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .faculty-profile-back {
+            display: inline-block;
+            margin-top: 22px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .faculty-profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faculty-profile-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="faculty-profile-page">
+        <header class="faculty-profile-header">
+            <h1>My Profile</h1>
+            <p>View your faculty account information.</p>
+        </header>
+
+        <section class="faculty-profile-card">
+            <div class="faculty-profile-intro">
+                <h2>
+                    {{ profile_user.get_full_name|default:profile_user.username }}
+                </h2>
+                <p>Faculty Account</p>
+            </div>
+
+            <div class="faculty-profile-grid">
+                <div class="faculty-profile-field">
+                    <label>First Name</label>
+                    <p>{{ profile_user.first_name|default:"Not provided" }}</p>
+                </div>
+
+                <div class="faculty-profile-field">
+                    <label>Last Name</label>
+                    <p>{{ profile_user.last_name|default:"Not provided" }}</p>
+                </div>
+
+                <div class="faculty-profile-field">
+                    <label>Username</label>
+                    <p>{{ profile_user.username }}</p>
+                </div>
+
+                <div class="faculty-profile-field">
+                    <label>Email Address</label>
+                    <p>{{ profile_user.email|default:"Not provided" }}</p>
+                </div>
+
+                <div class="faculty-profile-field">
+                    <label>Account Role</label>
+                    <p>{{ profile_user.get_role_display }}</p>
+                </div>
+
+                <div class="faculty-profile-field">
+                    <label>Member Since</label>
+                    <p>{{ profile_user.date_joined|date:"d M Y" }}</p>
+                </div>
+            </div>
+
+            
+            <div class="faculty-profile-section">
+                <h3>Assigned Subjects</h3>
+
+                {% if assigned_subjects %}
+                    <div class="faculty-subject-list">
+                        {% for subject in assigned_subjects %}
+                            <div class="faculty-subject-item">
+                                <span class="faculty-subject-dot"></span>
+                                <span>{{ subject.name }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="faculty-profile-empty">
+                        No subjects assigned yet.
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="faculty-profile-section">
+                <h3>Assigned Batches</h3>
+
+                {% if assigned_batches %}
+                    <div class="faculty-batch-list">
+                        {% for batch in assigned_batches %}
+                            <div class="faculty-batch-item">
+                                <span>{{ batch.name }}</span>
+                                <span class="faculty-batch-class">
+                                    Class {{ batch.class_level }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="faculty-profile-empty">
+                        No batches assigned yet.
+                    </p>
+                {% endif %}
+            </div>
+
+
+            <div class="faculty-profile-notice">
+                Your profile details are managed by the administrator.
+                Contact the administrator if any information needs to be updated.
+            </div>
+        </section>
+
+        <a class="faculty-profile-back" href="{% url 'faculty_dashboard' %}">
+            &larr; Back to Faculty Dashboard
+        </a>
+    </main>
+</body>
+</html>

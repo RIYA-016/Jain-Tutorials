@@ -1,0 +1,100 @@
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+
+<div class="faculty-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">FACULTY PORTAL</p>
+
+        <h1>Welcome, {{ request.user.first_name|default:request.user.username }}</h1>
+
+        <p>
+            Manage your batches, students and academic activities
+            from one place.
+        </p>
+    </div>
+
+    <div class="dashboard-stats">
+
+        <div class="dashboard-stat-card">
+            <span class="stat-label">MY BATCHES</span>
+            <strong>{{ total_batches }}</strong>
+            <span class="stat-description">
+                Assigned batches
+            </span>
+        </div>
+
+        <div class="dashboard-stat-card">
+            <span class="stat-label">MY STUDENTS</span>
+            <strong>{{ total_students }}</strong>
+            <span class="stat-description">
+                Active students
+            </span>
+        </div>
+
+    </div>
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+            <h2>My Batches</h2>
+            <p>Batches currently assigned to you.</p>
+        </div>
+
+        {% if faculty_batches %}
+
+            <div class="batch-list">
+
+                {% for batch in faculty_batches %}
+                          
+                    <a
+                        href="{% url 'faculty_batch_detail' batch.id %}"
+                        class="faculty-batch-card-link"
+                        aria-label="View details for {{ batch.name }}"
+                    >
+                        <div class="batch-card">
+                            <div>
+                                <span class="batch-class">
+                                    Class {{ batch.class_level }}
+                                </span>
+
+                                <h3>{{ batch.name }}</h3>
+
+                                <p>
+                                    Academic Year: {{ batch.academic_year }}
+                                </p>
+                            </div>
+
+                            <div class="batch-card-right">
+                                <div class="batch-student-count">
+                                    {{ batch.enrollments.all|length }} students
+                                </div>
+                                <span class="batch-view-link">View Class Details →</span>
+                            </div>
+                        </div>
+                    </a>
+
+
+                    
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+                <h3>No batches assigned</h3>
+                <p>
+                    Batches assigned to you will appear here.
+                </p>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

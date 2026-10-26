@@ -127,7 +127,16 @@
     </div>
 
 
-<form id="enquiry-form">
+<form id="enquiry-form" method="post" action="{% url 'contact' %}">
+    {% csrf_token %}
+
+    {% if messages %}
+    {% for message in messages %}
+        <p class="form-message {{ message.tags }}" role="status">
+            {{ message }}
+        </p>
+    {% endfor %}
+    {% endif %}
 
     <!-- NAME -->
 
@@ -256,44 +265,9 @@
         Send Enquiry →
     </button>
 
-
-    <!-- SUCCESS MESSAGE -->
-
-    <p
-        id="form-message"
-        class="form-message"
-    ></p>
-
 </form>
 
 
-<script>
-document.getElementById("enquiry-form").addEventListener("submit", function(event) {
 
-    event.preventDefault();
-
-    const form = this;
-    const message = document.getElementById("form-message");
-    const button = form.querySelector(".contact-submit");
-
-    button.disabled = true;
-    button.textContent = "Sending...";
-
-    setTimeout(function() {
-
-        message.textContent =
-            "Form submitted successfully. We will contact you soon.";
-
-        message.classList.add("success");
-
-        form.reset();
-
-        button.disabled = false;
-        button.textContent = "Send Enquiry →";
-
-    }, 700);
-
-});
-</script>
 
 {% endblock content %}

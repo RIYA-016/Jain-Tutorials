@@ -1,0 +1,122 @@
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+
+<div class="faculty-page">
+
+    <div class="page-heading">
+
+        <p class="portal-page-label">
+            FACULTY PORTAL
+        </p>
+
+        <h1>My Students</h1>
+
+        <p>
+            View the students enrolled in your assigned batches.
+        </p>
+
+    </div>
+
+
+    <div class="dashboard-stats">
+
+        <div class="dashboard-stat-card">
+
+            <span class="stat-label">
+                MY STUDENTS
+            </span>
+
+            <strong>
+                {{ total_students }}
+            </strong>
+
+            <span class="stat-description">
+                Active students
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="dashboard-section">
+
+        <div class="section-heading">
+
+            <h2>Student List</h2>
+
+            <p>
+                Students currently enrolled in your batches.
+            </p>
+
+        </div>
+
+
+        {% if students %}
+
+            <div class="faculty-student-list">
+
+                {% for student in students %}
+
+                    <div class="faculty-student-card">
+
+                        <div class="faculty-student-info">
+
+                            <div class="student-avatar">
+                                {{ student.user.first_name|first|default:student.user.username|first|upper }}
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ student.user.get_full_name|default:student.user.username }}
+                                </h3>
+
+                                <p>
+                                    Roll No.
+                                    {{ student.roll_number|default:"Not assigned" }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="faculty-student-batches">
+
+                            {% for enrollment in student.faculty_enrollments %}
+
+                                <span class="student-batch-tag">
+                                    Class {{ enrollment.batch.class_level }}
+                                </span>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <h3>No students found</h3>
+
+                <p>
+                    Students from your assigned batches will appear here.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,117 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jain Tutorials | Faculty Portal</title>
+
+    <link rel="stylesheet" href="{% static 'dashboard/css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard/css/portal.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="portal-layout">
+
+    <!-- MOBILE HEADER -->
+    <header class="faculty-mobile-header">
+        <a class="faculty-mobile-brand" href="{% url 'faculty_dashboard' %}">
+            <img src="{% static 'core/images/logo.jpeg' %}" alt="Jain Tutorials">
+            <span>Jain Tutorials</span>
+        </a>
+
+        <button
+            type="button"
+            class="faculty-mobile-menu-button"
+            id="facultyMobileMenuButton"
+            aria-expanded="false"
+            aria-controls="facultyMobileNavigation"
+            aria-label="Open navigation menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <!-- MOBILE NAVIGATION -->
+    <nav class="faculty-mobile-navigation" id="facultyMobileNavigation" hidden>
+        <a href="{% url 'faculty_dashboard' %}">Dashboard</a>
+        <a href="{% url 'faculty_students' %}">My Students</a>
+        <a href="{% url 'faculty_attendance' %}">Attendance</a>
+        <a href="{% url 'faculty_tests' %}">Tests &amp; Marks</a>
+        <a href="#">Study Material</a>
+        <a href="#">Announcements</a>
+        <a href="#">Profile</a>
+        <a class="faculty-mobile-logout" href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="portal-sidebar">
+        <div class="portal-brand">
+            <img src="{% static 'core/images/logo.jpeg' %}" alt="Jain Tutorials">
+            <span>Jain Tutorials</span>
+        </div>
+
+        <nav class="portal-navigation">
+            <a href="{% url 'faculty_dashboard' %}">Dashboard</a>
+            <a href="{% url 'faculty_students' %}">My Students</a>
+            <a href="{% url 'faculty_attendance' %}">Attendance</a>
+            <a href="{% url 'faculty_tests' %}">Tests &amp; Marks</a>
+            <a href="{% url 'faculty_study_material' %}">Study Material</a>
+            <a href="{% url 'faculty_announcements' %}">Announcements</a>
+            <a href="{% url 'faculty_profile' %}">My Profile</a>
+        </nav>
+
+        <div class="portal-sidebar-bottom">
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="portal-main">
+        <div class="portal-topbar">
+            <p class="portal-page-label">FACULTY PORTAL</p>
+            <span class="portal-user">
+                {{ request.user.first_name|default:request.user.username }}
+            </span>
+        </div>
+
+        <div class="portal-content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const menuButton = document.getElementById("facultyMobileMenuButton");
+    const mobileNavigation = document.getElementById("facultyMobileNavigation");
+
+    if (!menuButton || !mobileNavigation) return;
+
+    menuButton.addEventListener("click", function () {
+        const isOpening = mobileNavigation.hidden;
+
+        mobileNavigation.hidden = !isOpening;
+        menuButton.setAttribute("aria-expanded", String(isOpening));
+        menuButton.setAttribute(
+            "aria-label",
+            isOpening ? "Close navigation menu" : "Open navigation menu"
+        );
+    });
+
+    mobileNavigation.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+            mobileNavigation.hidden = true;
+            menuButton.setAttribute("aria-expanded", "false");
+            menuButton.setAttribute("aria-label", "Open navigation menu");
+        });
+    });
+});
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

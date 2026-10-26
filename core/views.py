@@ -1,5 +1,9 @@
 from django.shortcuts import render
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import ContactInquiry
+
 
 def home(request):
     return render(request, 'core/home.html')
@@ -9,8 +13,48 @@ def courses(request):
     return render(request, 'core/courses.html')
 
 
+
 def contact(request):
-    return render(request, 'core/contact.html')
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        phone = request.POST.get("phone", "").strip()
+        school = request.POST.get("school", "").strip()
+        class_name = request.POST.get("class", "").strip()
+        message = request.POST.get("message", "").strip()
+
+        valid_classes = {"7", "8", "9", "10", "foundation"}
+
+        if not all([name, phone, school, class_name]):
+            messages.error(
+                request,
+                "Please fill in all required fields."
+            )
+
+        elif class_name not in valid_classes:
+            messages.error(
+                request,
+                "Please select a valid class."
+            )
+
+        else:
+            ContactInquiry.objects.create(
+                name=name,
+                phone=phone,
+                school=school,
+                class_name=class_name,
+                message=message,
+            )
+
+            messages.success(
+                request,
+                "Your enquiry has been submitted successfully. "
+                "We will contact you soon."
+            )
+
+            return redirect("contact")
+
+    return render(request, "core/contact.html")
+
 
 
 def class_detail(request, class_no):

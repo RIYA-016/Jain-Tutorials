@@ -1,0 +1,82 @@
+
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+<div class="faculty-page faculty-announcements-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">FACULTY PORTAL / ANNOUNCEMENTS</p>
+        <h1>Edit Announcement</h1>
+        <p>Update your announcement details.</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="announcement-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <section class="announcement-form-card">
+        <h2>Edit Announcement</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="announcement-form-field">
+                <label for="announcement-title">Title</label>
+                <input
+                    type="text"
+                    id="announcement-title"
+                    name="title"
+                    maxlength="200"
+                    value="{{ announcement.title }}"
+                    required
+                >
+            </div>
+
+            <div class="announcement-form-field">
+                <label for="announcement-content">Message</label>
+                <textarea
+                    id="announcement-content"
+                    name="content"
+                    rows="5"
+                    required
+                >{{ announcement.content }}</textarea>
+            </div>
+
+            <div class="announcement-form-field">
+                <label for="announcement-batch">Target Batch</label>
+                <select id="announcement-batch" name="batch">
+                    <option value="">All students</option>
+
+                    {% for batch in faculty_batches %}
+                        <option
+                            value="{{ batch.pk }}"
+                            {% if announcement.batch_id == batch.pk %}selected{% endif %}
+                        >
+                            {{ batch.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="announcement-edit-actions">
+                <button type="submit" class="faculty-primary-button">
+                    Save Changes
+                </button>
+
+                <a
+                    href="{% url 'faculty_announcements' %}"
+                    class="announcement-cancel-button"
+                >
+                    Cancel
+                </a>
+            </div>
+            
+        </form>
+    </section>
+
+</div>
+{% endblock %}

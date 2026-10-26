@@ -1,0 +1,209 @@
+
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+<div class="faculty-page faculty-study-material-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">FACULTY PORTAL / RESOURCES</p>
+        <h1>Study Material</h1>
+        <p>Upload and manage notes, worksheets and question papers for your batches.</p>
+    </div>
+
+    {% if messages %}
+        <div class="faculty-material-messages" aria-live="polite">
+            {% for message in messages %}
+                <div class="faculty-material-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <section class="dashboard-section">
+        <div class="section-heading">
+            <h2>Upload New Material</h2>
+            <p>Choose the class and subject so the correct students can access the file.</p>
+        </div>
+
+        {% if batches %}
+            <form method="post"
+                  enctype="multipart/form-data"
+                  class="faculty-material-form">
+                {% csrf_token %}
+
+                <div class="faculty-material-form-grid">
+
+                    <div class="faculty-material-field">
+                        <label for="material-title">Title</label>
+                        <input id="material-title"
+                               type="text"
+                               name="title"
+                               maxlength="200"
+                               value="{{ request.POST.title|default:'' }}"
+                               required>
+                    </div>
+
+                    <div class="faculty-material-field">
+                        <label for="material-type">Material Type</label>
+                        <select id="material-type" name="material_type" required>
+                            {% for value, label in material_types %}
+                                <option value="{{ value }}"
+                                    {% if request.POST.material_type == value %}selected{% endif %}>
+                                    {{ label }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="faculty-material-field">
+                        <label for="material-batch">Batch</label>
+                        <select id="material-batch"
+                                name="batch"
+                                required>
+                            <option value="">Select batch</option>
+                            {% for batch in batches %}
+                                <option value="{{ batch.id }}"
+                                    {% if selected_batch_id == batch.id %}selected{% endif %}>
+                                    Class {{ batch.class_level }} — {{ batch.name }}
+                                    ({{ batch.academic_year }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="faculty-material-field">
+                        <label for="material-subject">Subject</label>
+                        <select id="material-subject"
+                                name="subject"
+                                required>
+                            <option value="">Select subject</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}"
+                                    {% if selected_subject_id == subject.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ subject.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="faculty-material-field faculty-material-full-width">
+                        <label for="material-description">Description (optional)</label>
+                        <textarea id="material-description"
+                                  name="description"
+                                  rows="3">{{ request.POST.description|default:'' }}</textarea>
+                    </div>
+
+                    <div class="faculty-material-field faculty-material-full-width">
+                        <label for="material-file">Choose File</label>
+                        <input id="material-file"
+                               type="file"
+                               name="file"
+                               accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png"
+                               required>
+                        <p class="faculty-material-help">
+                            PDF, Word, PowerPoint, JPG or PNG. Maximum file size: 15 MB.
+                        </p>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="faculty-primary-button">
+                    Upload Material
+                </button>
+            </form>
+        {% else %}
+            <div class="empty-state">
+                <h3>No batches assigned</h3>
+                <p>You need an assigned batch before you can upload study material.</p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="dashboard-section">
+        <div class="section-heading">
+            <h2>Uploaded Material</h2>
+            <p>Materials associated with your assigned batches.</p>
+        </div>
+
+        {% if study_materials %}
+            <div class="faculty-material-list">
+                {% for material in study_materials %}
+                    <article class="faculty-material-card">
+                        <div class="faculty-material-card-content">
+                            <span class="faculty-material-type">
+                                {{ material.get_material_type_display }}
+                            </span>
+
+                            <h3>{{ material.title }}</h3>
+
+                            <p class="faculty-material-meta">
+                                Class {{ material.batch.class_level }} ·
+                                {{ material.batch.name }} ·
+                                {{ material.subject.name }}
+                            </p>
+
+                            {% if material.description %}
+                                <p>{{ material.description }}</p>
+                            {% endif %}
+
+                            <p class="faculty-material-date">
+                                Uploaded {{ material.uploaded_at|date:"d M Y" }}
+                            </p>
+                        </div>
+
+                        <div class="faculty-material-card-actions">
+                            {% if material.file %}
+                                <a href="{{ material.file.url }}"
+                                   target="_blank"
+                                   rel="noopener"
+                                   class="faculty-secondary-button">
+                                    View File
+                                </a>
+                            {% endif %}
+
+                            <form method="post"
+                                  action="{% url 'faculty_delete_study_material' material.id %}"
+                                  onsubmit="return confirm('Delete this study material permanently?');">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="faculty-material-delete-button">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No study material uploaded yet</h3>
+                <p>Your uploaded notes, worksheets and question papers will appear here.</p>
+            </div>
+        {% endif %}
+    </section>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const batchSelect = document.getElementById("material-batch");
+    const subjectSelect = document.getElementById("material-subject");
+
+    if (!batchSelect || !subjectSelect) return;
+
+    batchSelect.addEventListener("change", function () {
+        const selectedBatch = batchSelect.value;
+        const currentUrl = new URL(window.location.href);
+
+        if (selectedBatch) {
+            currentUrl.searchParams.set("batch", selectedBatch);
+        } else {
+            currentUrl.searchParams.delete("batch");
+        }
+
+        window.location.href = currentUrl.toString();
+    });
+});
+</script>
+{% endblock %}

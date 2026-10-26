@@ -1,0 +1,149 @@
+
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+
+<div class="faculty-page edit-attendance-page">
+
+    <div class="page-heading">
+        <p class="portal-page-label">ATTENDANCE</p>
+        <h1>Edit Attendance</h1>
+        <p>Correct attendance details for <strong>{{ session.batch.name }}</strong>.</p>
+    </div>
+
+    {% if error %}
+        <div class="faculty-alert faculty-alert-error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <section class="dashboard-section edit-attendance-section">
+
+        <div class="section-heading">
+            <h2>Session Details</h2>
+            <p>Update the class timing, date or topics covered.</p>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="edit-attendance-form-grid">
+
+                <div class="faculty-form-group">
+                    <label for="date">Date</label>
+                    <input
+                        type="date"
+                        id="date"
+                        name="date"
+                        value="{{ session.date|date:'Y-m-d' }}"
+                        required
+                    >
+                </div>
+
+                <div class="faculty-form-group">
+                    <label for="start_time">Start Time</label>
+                    <input
+                        type="time"
+                        id="start_time"
+                        name="start_time"
+                        value="{{ session.start_time|time:'H:i' }}"
+                        required
+                    >
+                </div>
+
+                <div class="faculty-form-group">
+                    <label for="end_time">End Time</label>
+                    <input
+                        type="time"
+                        id="end_time"
+                        name="end_time"
+                        value="{{ session.end_time|time:'H:i' }}"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <div class="faculty-form-group edit-attendance-topic">
+                <label for="topics_covered">Topics Covered</label>
+                <textarea
+                    id="topics_covered"
+                    name="topics_covered"
+                    rows="3"
+                >{{ session.topics_covered }}</textarea>
+            </div>
+
+            <div class="edit-attendance-students">
+
+                <div class="section-heading">
+                    <h2>Student Attendance</h2>
+                    <p>Correct the attendance status where required.</p>
+                </div>
+
+                {% for student in students %}
+                    <div class="edit-attendance-student">
+
+                        <div class="edit-attendance-student-info">
+                            <div class="student-avatar">
+                                {{ student.user.first_name|first|default:student.user.username|first|upper }}
+                            </div>
+
+                            <div>
+                                <h3>
+                                    {{ student.user.get_full_name|default:student.user.username }}
+                                </h3>
+                                <p>Roll No. {{ student.roll_number|default:"Not assigned" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="edit-attendance-options">
+
+                            <label class="attendance-radio present-option">
+                                <input
+                                    type="radio"
+                                    name="attendance_{{ student.id }}"
+                                    value="PRESENT"
+                                    {% if student.attendance_status == 'PRESENT' %}checked{% endif %}
+                                >
+                                <span>Present</span>
+                            </label>
+
+                            <label class="attendance-radio absent-option">
+                                <input
+                                    type="radio"
+                                    name="attendance_{{ student.id }}"
+                                    value="ABSENT"
+                                    {% if student.attendance_status == 'ABSENT' %}checked{% endif %}
+                                >
+                                <span>Absent</span>
+                            </label>
+
+                        </div>
+
+                    </div>
+                {% empty %}
+                    <div class="empty-state">
+                        <h3>No active students</h3>
+                        <p>No active students are enrolled in this batch.</p>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="edit-attendance-actions">
+                <a href="{% url 'faculty_attendance' %}" class="faculty-cancel-button">
+                    Cancel
+                </a>
+
+                <button type="submit" class="faculty-primary-button">
+                    Update Attendance
+                </button>
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

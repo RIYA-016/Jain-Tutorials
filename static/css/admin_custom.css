@@ -1,0 +1,1494 @@
+
+/* =========================================================
+   JAIN TUTORIALS — COMPLETE ADMIN DESIGN SYSTEM
+   Django Admin: Dashboard, Lists, Forms, Filters & Navigation
+   ========================================================= */
+
+/* ---------- 1. DESIGN TOKENS ---------- */
+
+:root {
+    color-scheme: light;
+
+    --jt-primary: #173b63;
+    --jt-primary-dark: #102b49;
+    --jt-primary-hover: #244f7c;
+    --jt-primary-soft: #eaf2fb;
+
+    --jt-page: #f4f7fb;
+    --jt-white: #ffffff;
+    --jt-text: #1e293b;
+    --jt-muted: #64748b;
+
+    --jt-border: #dfe7f0;
+    --jt-border-light: #edf1f6;
+
+    --jt-green: #15803d;
+    --jt-green-bg: #f0fdf4;
+    --jt-red: #b91c1c;
+    --jt-red-bg: #fef2f2;
+    --jt-amber: #92400e;
+    --jt-amber-bg: #fffbeb;
+
+    --jt-radius: 10px;
+    --jt-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+    --jt-shadow-hover: 0 7px 20px rgba(15, 23, 42, 0.07);
+}
+
+/* Override Django's automatic dark-mode palette. */
+
+html,
+html[data-theme="light"],
+html[data-theme="dark"] {
+    color-scheme: light !important;
+
+    --primary: #173b63;
+    --secondary: #102b49;
+    --accent: #fbbf24;
+    --primary-fg: #ffffff;
+
+    --body-fg: #1e293b;
+    --body-bg: #f4f7fb;
+    --body-quiet-color: #64748b;
+    --body-loud-color: #0f172a;
+
+    --header-color: #ffffff;
+    --header-branding-color: #ffffff;
+    --header-bg: #173b63;
+    --header-link-color: #ffffff;
+
+    --breadcrumbs-fg: #173b63;
+    --breadcrumbs-link-fg: #173b63;
+    --breadcrumbs-bg: #eaf2fb;
+
+    --link-fg: #173b63;
+    --link-hover-color: #2563eb;
+    --link-selected-fg: #102b49;
+
+    --hairline-color: #dfe7f0;
+    --border-color: #dfe7f0;
+    --darkened-bg: #f8fafc;
+    --selected-bg: #eaf2fb;
+    --selected-row: #eaf2fb;
+
+    --button-bg: #173b63;
+    --button-hover-bg: #102b49;
+    --default-button-bg: #173b63;
+    --default-button-hover-bg: #102b49;
+}
+
+/* ---------- 2. GLOBAL LAYOUT ---------- */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    background: var(--jt-page) !important;
+    color: var(--jt-text) !important;
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+#container {
+    min-height: 100vh;
+    background: var(--jt-page) !important;
+}
+
+#main,
+#content,
+#content-main {
+    min-width: 0;
+    background: var(--jt-page) !important;
+}
+
+#content {
+    padding: 28px 30px;
+    color: var(--jt-text) !important;
+}
+
+#content h1 {
+    margin: 0 0 24px;
+    color: var(--jt-primary) !important;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.35px;
+}
+
+#content h2 {
+    color: var(--jt-primary);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+#content h3 {
+    color: var(--jt-primary);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+a,
+a:link,
+a:visited {
+    color: var(--jt-primary);
+}
+
+a:hover {
+    color: #2563eb;
+}
+
+::selection {
+    background: #dbeafe;
+    color: #173b63;
+}
+
+/* ---------- 3. HEADER AND BRANDING ---------- */
+
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 76px;
+    padding: 14px 28px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
+}
+
+#branding {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+#site-name {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+#site-name a,
+#site-name a:link,
+#site-name a:visited {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #ffffff !important;
+    text-decoration: none !important;
+}
+
+.jt-brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 11px;
+    background: #ffffff;
+    color: var(--jt-primary);
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.jt-brand-text {
+    color: #ffffff;
+    letter-spacing: -0.4px;
+}
+
+.jt-brand-label {
+    margin-left: 2px;
+    padding: 5px 9px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: #dbeafe;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+}
+
+#user-tools {
+    color: #eaf2ff !important;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+#user-tools a,
+#user-tools a:link,
+#user-tools a:visited {
+    color: #ffffff !important;
+}
+
+#user-tools a:hover {
+    color: #bfdbfe !important;
+}
+
+/* ---------- 4. BREADCRUMBS ---------- */
+
+div.breadcrumbs {
+    padding: 12px 28px;
+    background: var(--jt-primary-soft) !important;
+    color: var(--jt-primary) !important;
+    border-bottom: 1px solid #d8e5f3;
+    font-size: 13px;
+}
+
+div.breadcrumbs a,
+div.breadcrumbs a:link,
+div.breadcrumbs a:visited {
+    color: var(--jt-primary) !important;
+    text-decoration: none;
+}
+
+div.breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+/* ---------- 5. LEFT NAVIGATION ---------- */
+
+/* Django's standard navigation sidebar */
+
+#nav-sidebar {
+    background: #ffffff !important;
+    border-right: 1px solid var(--jt-border) !important;
+    box-shadow: 2px 0 8px rgba(15, 23, 42, 0.025);
+}
+
+#nav-sidebar a,
+#nav-sidebar a:link,
+#nav-sidebar a:visited {
+    color: var(--jt-primary) !important;
+    text-decoration: none;
+}
+
+#nav-sidebar a:hover {
+    color: #2563eb !important;
+    background: #f3f7fc !important;
+}
+
+#nav-sidebar .current-app .section:link,
+#nav-sidebar .current-app .section:visited {
+    color: #ffffff !important;
+    background: var(--jt-primary) !important;
+}
+
+#nav-sidebar .current-model {
+    background: var(--jt-primary-soft) !important;
+    border-left: 3px solid var(--jt-primary);
+}
+
+#nav-sidebar .current-model a {
+    color: var(--jt-primary) !important;
+    font-weight: 700;
+}
+
+#nav-sidebar .module {
+    margin: 8px;
+    border-radius: 9px;
+    overflow: hidden;
+}
+
+#nav-sidebar caption,
+#nav-sidebar .module caption {
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+}
+
+#nav-sidebar input[type="text"],
+#nav-sidebar input[type="search"] {
+    width: 100%;
+    min-height: 38px;
+    padding: 8px 10px;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+}
+
+#nav-sidebar .addlink,
+#nav-sidebar a.addlink {
+    color: var(--jt-green) !important;
+    font-weight: 700;
+}
+
+/* Legacy/sidebar navigation used by some admin layouts */
+
+#nav-filter {
+    width: 100%;
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+}
+
+#nav-filter:focus {
+    outline: 2px solid #bfdbfe;
+    border-color: #3b82f6 !important;
+}
+
+/* ---------- 6. ADMIN HOME MODULES ---------- */
+
+.module,
+.inline-group {
+    margin-bottom: 22px;
+    overflow: hidden;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: var(--jt-radius);
+    box-shadow: var(--jt-shadow);
+}
+
+.module caption,
+.module h2,
+.inline-group h2 {
+    margin: 0;
+    padding: 14px 17px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    border: 0;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.25px;
+}
+
+.module table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff !important;
+}
+
+.module table th,
+.module table td {
+    padding: 13px 15px;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+    border-bottom: 1px solid var(--jt-border-light) !important;
+    font-size: 13px;
+}
+
+.module table tr:last-child th,
+.module table tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.module table tr:hover th,
+.module table tr:hover td {
+    background: #f3f7fc !important;
+}
+
+.module table th a,
+.module table th a:link,
+.module table th a:visited {
+    color: var(--jt-primary) !important;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ---------- 7. ADD / CHANGE / DELETE LINKS ---------- */
+
+.addlink,
+a.addlink {
+    color: var(--jt-green) !important;
+    font-weight: 600;
+}
+
+.changelink,
+a.changelink,
+.viewlink,
+a.viewlink {
+    color: var(--jt-primary) !important;
+    font-weight: 600;
+}
+
+.deletelink,
+a.deletelink {
+    color: var(--jt-red) !important;
+    font-weight: 600;
+}
+
+/* ---------- 8. ADD BUTTONS ---------- */
+
+.object-tools {
+    margin: 0 0 20px;
+    padding: 0;
+}
+
+.object-tools li {
+    margin-left: 8px;
+}
+
+.object-tools a,
+.object-tools a:link,
+.object-tools a:visited {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 10px 16px;
+    border: 1px solid var(--jt-primary);
+    border-radius: 8px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none !important;
+    box-shadow: none;
+}
+
+.object-tools a:hover {
+    background: var(--jt-primary-dark) !important;
+    color: #ffffff !important;
+}
+
+/* ---------- 9. MODEL LIST PAGE ---------- */
+
+#changelist {
+    display: block;
+    min-width: 0;
+    overflow: visible;
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+
+#changelist-form {
+    min-width: 0;
+}
+
+#changelist .hiddenfields {
+    display: none;
+}
+
+/* Search panel */
+
+#toolbar {
+    display: block;
+    margin: 0 0 18px;
+    padding: 15px 17px;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 10px;
+    box-shadow: var(--jt-shadow);
+}
+
+#toolbar form {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    gap: 10px;
+}
+
+#toolbar form > div {
+    display: flex;
+    align-items: center;
+    flex: 1 1 300px;
+    flex-flow: row wrap;
+    gap: 10px;
+    min-width: 0;
+}
+
+#toolbar label {
+    flex-shrink: 0;
+}
+
+#toolbar input[type="text"],
+#toolbar input[type="search"] {
+    flex: 1 1 300px;
+    width: auto;
+    min-width: 180px;
+    max-width: 560px;
+    min-height: 40px;
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+}
+
+#toolbar input[type="submit"],
+#toolbar button {
+    flex: 0 0 auto;
+    min-height: 40px;
+    padding: 9px 17px;
+    border: 1px solid var(--jt-primary) !important;
+    border-radius: 7px !important;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+}
+
+/* ---------- 10. BULK ACTION BAR ---------- */
+
+#changelist .actions {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    gap: 12px;
+    margin: 0;
+    padding: 13px 16px;
+    background: #edf3fa !important;
+    color: #334155 !important;
+    border: 1px solid var(--jt-border);
+    border-bottom: 0;
+    border-radius: 9px 9px 0 0;
+}
+
+#changelist .actions label,
+#changelist .actions span,
+#changelist .actions .action-counter {
+    color: #334155 !important;
+}
+
+#changelist .actions select {
+    min-width: 175px;
+    max-width: 100%;
+    min-height: 38px;
+}
+
+/* ---------- 11. RESULTS TABLE ---------- */
+
+#changelist .results {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border);
+    border-radius: 0 0 9px 9px;
+}
+
+#changelist #result_list {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #ffffff !important;
+}
+
+#changelist #result_list thead th {
+    padding: 14px 14px;
+    background: #eaf2fb !important;
+    color: var(--jt-primary) !important;
+    border-bottom: 1px solid #dbe5f0 !important;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: normal;
+}
+
+#changelist #result_list thead th a,
+#changelist #result_list thead th a:link,
+#changelist #result_list thead th a:visited {
+    color: var(--jt-primary) !important;
+}
+
+#changelist #result_list tbody tr,
+#changelist #result_list tbody tr:nth-child(odd),
+#changelist #result_list tbody tr:nth-child(even) {
+    background: #ffffff !important;
+}
+
+#changelist #result_list tbody th,
+#changelist #result_list tbody td {
+    padding: 14px;
+    background: #ffffff !important;
+    color: #334155 !important;
+    border-bottom: 1px solid var(--jt-border-light) !important;
+    font-size: 13px;
+    line-height: 1.6;
+    vertical-align: middle;
+}
+
+#changelist #result_list tbody tr:hover th,
+#changelist #result_list tbody tr:hover td {
+    background: #f3f7fc !important;
+}
+
+#changelist #result_list tbody tr:last-child th,
+#changelist #result_list tbody tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+#changelist #result_list tbody th a,
+#changelist #result_list tbody td a,
+#changelist #result_list tbody th a:visited,
+#changelist #result_list tbody td a:visited {
+    color: var(--jt-primary) !important;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+#changelist #result_list tbody th a:hover,
+#changelist #result_list tbody td a:hover {
+    color: #2563eb !important;
+    text-decoration: underline;
+}
+
+/* Checkboxes */
+
+#changelist input[type="checkbox"],
+.selector input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--jt-primary);
+    cursor: pointer;
+}
+
+/* ---------- 12. FILTER PANEL ---------- */
+
+#changelist-filter {
+    width: 220px;
+    min-width: 0;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--jt-shadow);
+}
+
+#changelist-filter h2 {
+    margin: 0;
+    padding: 15px 16px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+#changelist-filter h3 {
+    margin: 0;
+    padding: 14px 15px 7px;
+    color: var(--jt-muted) !important;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+#changelist-filter ul {
+    margin: 0;
+    padding: 4px 13px 15px 24px;
+}
+
+#changelist-filter li {
+    margin: 0;
+    padding: 7px 0;
+    line-height: 1.5;
+}
+
+#changelist-filter li a,
+#changelist-filter li a:link,
+#changelist-filter li a:visited {
+    color: var(--jt-primary) !important;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+#changelist-filter li a:hover {
+    color: #2563eb !important;
+    text-decoration: underline;
+}
+
+#changelist-filter li.selected {
+    padding-left: 8px;
+    border-left: 3px solid var(--jt-primary);
+}
+
+/* ---------- 13. PAGINATION / RECORD COUNT ---------- */
+
+#changelist .paginator {
+    margin: 0;
+    padding: 15px 16px;
+    background: #ffffff !important;
+    color: var(--jt-muted) !important;
+    border: 1px solid var(--jt-border);
+    border-top: 0;
+    border-radius: 0 0 9px 9px;
+    font-size: 13px;
+}
+
+#changelist .paginator a {
+    color: var(--jt-primary) !important;
+}
+
+/* ---------- 14. ADD / EDIT FORMS ---------- */
+
+form .aligned p,
+form .aligned ul,
+form .aligned div.help {
+    color: var(--jt-muted);
+}
+
+fieldset {
+    margin: 0 0 22px;
+    padding: 0;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--jt-shadow);
+}
+
+fieldset h2 {
+    margin: 0;
+    padding: 15px 19px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+fieldset .description {
+    padding: 12px 19px 0;
+    color: var(--jt-muted) !important;
+    font-size: 12px;
+}
+
+.form-row {
+    padding: 16px 19px;
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--jt-border-light);
+}
+
+.form-row:last-child {
+    border-bottom: 0;
+}
+
+.form-row label,
+.aligned label {
+    color: var(--jt-text) !important;
+    font-weight: 600;
+}
+
+.form-row .help,
+.form-row p.help,
+.help,
+.helptext,
+p.help {
+    color: var(--jt-muted) !important;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.aligned .vTextField,
+.aligned .vLargeTextField,
+.aligned .vURLField,
+.aligned .vIntegerField,
+.aligned .vBigIntegerField,
+.aligned .vDateField,
+.aligned .vTimeField,
+.aligned .vDateTimeField,
+.aligned .vForeignKeyRawIdAdminField {
+    max-width: 100%;
+}
+
+/* Text fields, dropdowns and text areas */
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="file"]),
+select,
+textarea {
+    max-width: 100%;
+    padding: 9px 11px;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    font-family: inherit;
+    font-size: 13px;
+    box-shadow: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid #bfdbfe !important;
+    outline-offset: 0;
+    border-color: #3b82f6 !important;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+input[type="file"] {
+    max-width: 100%;
+    color: var(--jt-text);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: var(--jt-primary);
+}
+
+/* Django relation selectors */
+
+.selector,
+.selector-available,
+.selector-chosen {
+    border-color: var(--jt-border) !important;
+    border-radius: 8px;
+}
+
+.selector h2,
+.selector-available h2,
+.selector-chosen h2 {
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+}
+
+.selector select {
+    width: 100%;
+}
+
+/* ---------- 15. SAVE / DELETE / FORM BUTTONS ---------- */
+
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button,
+button {
+    min-height: 38px;
+    padding: 9px 15px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--jt-primary) !important;
+    border-radius: 7px !important;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: none;
+}
+
+.button:hover,
+input[type="submit"]:hover,
+input[type="button"]:hover,
+.submit-row input:hover,
+a.button:hover,
+button:hover {
+    background: var(--jt-primary-dark) !important;
+    color: #ffffff !important;
+}
+
+.submit-row {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    gap: 10px;
+    margin: 0 0 22px;
+    padding: 15px;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border);
+    border-radius: 9px;
+    box-shadow: var(--jt-shadow);
+}
+
+.submit-row .deletelink {
+    margin-left: auto;
+    color: var(--jt-red) !important;
+    background: var(--jt-red-bg) !important;
+    border-color: #fecaca !important;
+}
+
+.submit-row .deletelink:hover {
+    color: #ffffff !important;
+    background: var(--jt-red) !important;
+}
+
+/* ---------- 16. INLINE FORMS ---------- */
+
+.inline-group {
+    margin-bottom: 22px;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.inline-group .tabular {
+    overflow-x: auto;
+}
+
+.inline-group .tabular table {
+    min-width: 650px;
+    background: #ffffff !important;
+}
+
+.inline-group .tabular thead th {
+    padding: 12px;
+    background: #eaf2fb !important;
+    color: var(--jt-primary) !important;
+}
+
+.inline-group .tabular td {
+    padding: 12px;
+    border-bottom: 1px solid var(--jt-border-light);
+}
+
+.add-row a {
+    color: var(--jt-green) !important;
+    font-weight: 600;
+}
+
+/* ---------- 17. VALIDATION AND ERROR MESSAGES ---------- */
+
+.errornote {
+    margin: 0 0 20px;
+    padding: 14px 16px;
+    background: var(--jt-red-bg) !important;
+    color: #991b1b !important;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+}
+
+.errorlist {
+    margin: 6px 0;
+    padding-left: 20px;
+    color: var(--jt-red) !important;
+    font-size: 12px;
+}
+
+.errors input,
+.errors select,
+.errors textarea {
+    border-color: #ef4444 !important;
+}
+
+ul.messagelist {
+    margin: 0 0 22px;
+    padding: 0;
+    list-style: none;
+}
+
+ul.messagelist li {
+    margin: 0 0 10px;
+    padding: 13px 16px;
+    background: var(--jt-green-bg) !important;
+    color: #166534 !important;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    box-shadow: none;
+}
+
+ul.messagelist li a,
+ul.messagelist li a:link,
+ul.messagelist li a:visited {
+    color: #14532d !important;
+    text-decoration: underline;
+}
+
+ul.messagelist li.error {
+    background: var(--jt-red-bg) !important;
+    color: #991b1b !important;
+    border-color: #fecaca;
+}
+
+ul.messagelist li.warning {
+    background: var(--jt-amber-bg) !important;
+    color: var(--jt-amber) !important;
+    border-color: #fde68a;
+}
+
+/* ---------- 18. RECENT ACTIONS ---------- */
+
+#content-related {
+    align-self: start;
+    background: #ffffff !important;
+    color: var(--jt-text) !important;
+    border: 1px solid var(--jt-border) !important;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--jt-shadow);
+}
+
+#content-related h2 {
+    margin: 0;
+    padding: 15px 17px;
+    background: var(--jt-primary) !important;
+    color: #ffffff !important;
+    font-size: 15px;
+}
+
+#content-related h3 {
+    padding: 0 17px;
+    color: var(--jt-primary) !important;
+}
+
+#content-related ul {
+    padding: 8px 18px 17px 35px;
+}
+
+#content-related li {
+    padding: 7px 0;
+    color: var(--jt-text) !important;
+    overflow-wrap: anywhere;
+}
+
+#content-related li a,
+#content-related li a:link,
+#content-related li a:visited {
+    color: var(--jt-primary) !important;
+    font-weight: 600;
+}
+
+/* ---------- 19. HISTORY ---------- */
+
+#change-history,
+#change-history table {
+    background: #ffffff !important;
+    border-color: var(--jt-border) !important;
+}
+
+#change-history th,
+#change-history td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--jt-border-light);
+}
+
+/* ---------- 20. DASHBOARD: WELCOME PANEL ---------- */
+
+.jt-dashboard {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    color: var(--jt-text);
+    font-size: 14px;
+}
+
+.jt-dashboard .jt-welcome {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 30px 34px;
+    margin: 0 0 34px;
+    background: linear-gradient(120deg, #173b63, #244f7c) !important;
+    border: 1px solid #244f7c;
+    border-radius: 15px;
+    color: #ffffff !important;
+    box-shadow: 0 8px 24px rgba(23, 59, 99, 0.12);
+}
+
+.jt-dashboard .jt-welcome > div {
+    flex: 1;
+    min-width: 0;
+}
+
+.jt-dashboard .jt-eyebrow {
+    margin: 0 0 12px;
+    color: #bfdbfe !important;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+#content .jt-dashboard .jt-welcome h1 {
+    margin: 0 0 12px !important;
+    color: #ffffff !important;
+    font-size: 30px !important;
+    font-weight: 700 !important;
+    line-height: 1.35;
+}
+
+.jt-dashboard .jt-welcome-description {
+    margin: 0;
+    color: #e5eef9 !important;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.jt-dashboard .jt-primary-button,
+.jt-dashboard .jt-primary-button:link,
+.jt-dashboard .jt-primary-button:visited {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 12px 17px;
+    background: #ffffff !important;
+    color: #173b63 !important;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none !important;
+    white-space: nowrap;
+}
+
+.jt-dashboard .jt-primary-button:hover {
+    background: #eaf2fb !important;
+    color: #102b49 !important;
+}
+
+/* ---------- 21. DASHBOARD: SECTION HEADINGS ---------- */
+
+.jt-dashboard .jt-section {
+    margin: 0 0 34px;
+}
+
+.jt-dashboard .jt-section-heading {
+    margin: 0 0 19px;
+}
+
+.jt-dashboard .jt-section-heading h2 {
+    margin: 0 0 6px !important;
+    color: #173b63 !important;
+    font-size: 22px !important;
+    font-weight: 700 !important;
+}
+
+.jt-dashboard .jt-section-heading p {
+    margin: 0;
+    color: #64748b !important;
+    font-size: 13px;
+}
+
+/* ---------- 22. DASHBOARD: MANAGEMENT CARDS ---------- */
+
+.jt-dashboard .jt-management-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+}
+
+.jt-dashboard .jt-management-card,
+.jt-dashboard .jt-management-card:link,
+.jt-dashboard .jt-management-card:visited {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    min-height: 116px;
+    padding: 22px 20px;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border);
+    border-radius: 12px;
+    color: var(--jt-text) !important;
+    text-decoration: none !important;
+    box-shadow: var(--jt-shadow);
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+
+.jt-dashboard .jt-management-card:hover {
+    background: #ffffff !important;
+    border-color: #a8c4e6;
+    box-shadow: var(--jt-shadow-hover);
+    transform: translateY(-2px);
+}
+
+.jt-dashboard .jt-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+}
+
+.jt-dashboard .jt-icon-blue {
+    background: #eaf2ff;
+    color: #1d4ed8;
+}
+
+.jt-dashboard .jt-icon-purple {
+    background: #f3e8ff;
+    color: #7e22ce;
+}
+
+.jt-dashboard .jt-icon-green {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.jt-dashboard .jt-icon-orange {
+    background: #ffedd5;
+    color: #c2410c;
+}
+
+.jt-dashboard .jt-icon-teal {
+    background: #ccfbf1;
+    color: #0f766e;
+}
+
+.jt-dashboard .material-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    line-height: 1;
+}
+
+.jt-dashboard .jt-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    padding-top: 2px;
+}
+
+.jt-dashboard .jt-card-content strong {
+    color: #173b63 !important;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none !important;
+}
+
+.jt-dashboard .jt-card-content > span {
+    color: #64748b !important;
+    font-size: 12px;
+    line-height: 1.7;
+    text-decoration: none !important;
+}
+
+.jt-dashboard .jt-card-arrow {
+    flex-shrink: 0;
+    color: #94a3b8;
+    font-size: 20px;
+    text-decoration: none !important;
+}
+
+/* ---------- 23. DASHBOARD: QUICK ACTIONS ---------- */
+
+.jt-dashboard .jt-quick-section {
+    padding: 27px;
+    background: #ffffff !important;
+    border: 1px solid var(--jt-border);
+    border-radius: 13px;
+    box-shadow: var(--jt-shadow);
+}
+
+.jt-dashboard .jt-quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.jt-dashboard .jt-quick-actions a,
+.jt-dashboard .jt-quick-actions a:link,
+.jt-dashboard .jt-quick-actions a:visited {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 0;
+    padding: 14px;
+    background: #f8fafc !important;
+    border: 1px solid var(--jt-border);
+    border-radius: 9px;
+    color: #173b63 !important;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+
+.jt-dashboard .jt-quick-actions a:hover {
+    background: #eaf2fb !important;
+    border-color: #bfd4ee;
+}
+
+.jt-dashboard .jt-quick-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    border-radius: 7px;
+    background: #eaf2fb;
+    color: #173b63;
+    font-size: 18px;
+}
+
+.jt-dashboard .jt-footer-note {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 2px 8px;
+    border-top: 1px solid var(--jt-border);
+}
+
+.jt-dashboard .jt-footer-note strong {
+    color: #173b63;
+    font-size: 13px;
+}
+
+.jt-dashboard .jt-footer-note p {
+    margin: 5px 0 0;
+    color: #64748b;
+    font-size: 12px;
+}
+
+.jt-dashboard .jt-footer-note a,
+.jt-dashboard .jt-footer-note a:link,
+.jt-dashboard .jt-footer-note a:visited {
+    color: #173b63 !important;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none !important;
+}
+
+/* ---------- 24. FOOTER ---------- */
+
+#footer {
+    padding: 18px 28px;
+    color: var(--jt-muted) !important;
+}
+
+/* ---------- 25. RESPONSIVE LAYOUT ---------- */
+
+@media (max-width: 1200px) {
+    .jt-dashboard .jt-management-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .jt-dashboard .jt-quick-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1100px) {
+    #content {
+        padding: 22px;
+    }
+
+    #header {
+        padding-right: 22px;
+        padding-left: 22px;
+    }
+
+    div.breadcrumbs {
+        padding-right: 22px;
+        padding-left: 22px;
+    }
+
+    #changelist-filter {
+        width: 190px;
+    }
+}
+
+@media (max-width: 767px) {
+    #header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px 17px;
+    }
+
+    #site-name {
+        font-size: 20px;
+    }
+
+    .jt-brand-label {
+        display: none;
+    }
+
+    #content {
+        padding: 17px 13px;
+    }
+
+    #content h1 {
+        font-size: 23px;
+    }
+
+    div.breadcrumbs {
+        padding: 11px 14px;
+    }
+
+    #changelist {
+        overflow: visible;
+    }
+
+    #changelist .results {
+        overflow-x: auto;
+    }
+
+    #changelist #result_list {
+        min-width: 650px;
+    }
+
+    #changelist-filter {
+        width: 100%;
+        margin-top: 18px;
+    }
+
+    #toolbar form > div {
+        flex-basis: 100%;
+    }
+
+    #toolbar input[type="text"],
+    #toolbar input[type="search"] {
+        flex-basis: 100%;
+        max-width: 100%;
+    }
+
+    .submit-row {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .submit-row input,
+    .submit-row a {
+        width: 100%;
+        text-align: center;
+    }
+
+    .jt-dashboard .jt-welcome {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 24px 21px;
+        gap: 20px;
+    }
+
+    #content .jt-dashboard .jt-welcome h1 {
+        font-size: 25px !important;
+    }
+
+    .jt-dashboard .jt-management-grid,
+    .jt-dashboard .jt-quick-actions {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .jt-dashboard .jt-management-card {
+        min-height: 100px;
+        padding: 18px;
+    }
+
+    .jt-dashboard .jt-quick-section {
+        padding: 19px;
+    }
+
+    .jt-dashboard .jt-footer-note {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+/* Consistent dashboard icon rendering */
+.jt-dashboard .jt-card-icon > span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+}
+
+.jt-dashboard .jt-card-icon {
+    flex-shrink: 0;
+}

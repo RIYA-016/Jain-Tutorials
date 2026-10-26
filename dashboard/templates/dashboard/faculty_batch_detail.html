@@ -1,0 +1,276 @@
+
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+<div class="faculty-page faculty-batch-detail-page">
+
+    <!-- Page heading -->
+    <div class="page-heading">
+        <p class="portal-page-label">FACULTY PORTAL / MY BATCHES</p>
+
+        <h1>{{ batch.name }}</h1>
+
+        <p>
+            Class {{ batch.class_level }} · Academic Year:
+            {{ batch.academic_year }}
+        </p>
+
+        <a href="{% url 'faculty_dashboard' %}"
+           class="faculty-secondary-button">
+            ← Back to Dashboard
+        </a>
+    </div>
+
+
+    <!-- Clickable batch statistics -->
+    <div class="dashboard-stats">
+
+        <a href="#students-section"
+           class="dashboard-stat-card batch-stat-link">
+            <span class="stat-label">ACTIVE STUDENTS</span>
+            <strong>{{ total_students }}</strong>
+            <span class="stat-description">Currently enrolled</span>
+            <span class="batch-stat-hint">View students ↓</span>
+        </a>
+
+        <a href="#attendance-section"
+           class="dashboard-stat-card batch-stat-link">
+            <span class="stat-label">ATTENDANCE</span>
+
+            <strong>
+                {% if attendance_percentage != None %}
+                    {{ attendance_percentage }}%
+                {% else %}
+                    —
+                {% endif %}
+            </strong>
+
+            <span class="stat-description">
+                {% if attendance_percentage != None %}
+                    {{ present_records }} present out of
+                    {{ total_attendance_records }} recorded entries
+                {% else %}
+                    No attendance data yet
+                {% endif %}
+            </span>
+
+            <span class="batch-stat-hint">View attendance ↓</span>
+        </a>
+
+        <a href="#highest-score-section"
+           class="dashboard-stat-card batch-stat-link">
+            <span class="stat-label">AVERAGE TEST SCORE</span>
+
+            <strong>
+                {% if average_test_percentage != None %}
+                    {{ average_test_percentage }}%
+                {% else %}
+                    —
+                {% endif %}
+            </strong>
+
+            <span class="stat-description">
+                {% if average_test_percentage != None %}
+                    Average of recorded mark percentages
+                {% else %}
+                    No marks recorded yet
+                {% endif %}
+            </span>
+
+            <span class="batch-stat-hint">View performance ↓</span>
+        </a>
+
+        <a href="#tests-section"
+           class="dashboard-stat-card batch-stat-link">
+            <span class="stat-label">TESTS</span>
+            <strong>{{ tests|length }}</strong>
+            <span class="stat-description">Tests created for this batch</span>
+            <span class="batch-stat-hint">View tests ↓</span>
+        </a>
+
+    </div>
+
+
+    <!-- Highest recorded score -->
+    <section class="dashboard-section" id="highest-score-section">
+        <div class="section-heading">
+            <h2>Highest Recorded Score</h2>
+            <p>Best recorded result in this batch.</p>
+        </div>
+
+        {% if highest_mark %}
+            <div class="faculty-batch-detail-row">
+                <div>
+                    <strong>{{ highest_mark.student_name }}</strong>
+
+                    <p>Test: {{ highest_mark.test_title }}</p>
+
+                    <p>
+                        Score: {{ highest_mark.marks_obtained }} /
+                        {{ highest_mark.max_marks }}
+                    </p>
+                </div>
+
+                <span class="batch-student-count">
+                    {{ highest_mark.percentage }}%
+                </span>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No marks recorded for this batch yet.</p>
+            </div>
+        {% endif %}
+    </section>
+
+
+    <!-- Students -->
+    <section class="dashboard-section" id="students-section">
+        <div class="section-heading">
+            <h2>Students</h2>
+            <p>Students enrolled in {{ batch.name }}.</p>
+        </div>
+
+        {% if students %}
+            <div class="faculty-batch-detail-list">
+                {% for student in students %}
+                    <div class="faculty-batch-detail-row">
+                        <div>
+                            <strong>
+                                {{ student.user.get_full_name|default:student.user.username }}
+                            </strong>
+                            <p>{{ student.user.username }}</p>
+                        </div>
+
+                        <span class="batch-class">
+                            Roll No. {{ student.roll_number|default:"Not assigned" }}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No active students</h3>
+                <p>No active students are enrolled in this batch.</p>
+            </div>
+        {% endif %}
+
+        <div class="faculty-batch-detail-actions">
+            <a class="faculty-primary-button"
+               href="{% url 'faculty_students' %}">
+                View All My Students
+            </a>
+
+            <a class="faculty-secondary-button"
+               href="{% url 'faculty_attendance' %}?batch={{ batch.id }}">
+                Manage Attendance
+            </a>
+        </div>
+    </section>
+
+
+    <!-- Tests and marks -->
+    <section class="dashboard-section" id="tests-section">
+        <div class="section-heading">
+            <h2>Tests &amp; Marks</h2>
+            <p>Tests created for this batch and their marks-entry status.</p>
+        </div>
+
+        {% if tests %}
+            <div class="faculty-batch-detail-list">
+                {% for test in tests %}
+                    <div class="faculty-batch-detail-row">
+                        <div>
+                            <strong>{{ test.title }}</strong>
+
+                            <p>
+                                {{ test.subject.name }} ·
+                                {{ test.test_date|date:"d M Y" }}
+                            </p>
+
+                            <p>
+                                Maximum marks: {{ test.max_marks }} ·
+                                Students with marks: {{ test.marks_entered_count }}
+                            </p>
+                        </div>
+
+                        <a class="faculty-secondary-button"
+                           href="{% url 'faculty_enter_marks' test.id %}">
+                            Enter / Edit Marks
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No tests created yet</h3>
+                <p>Create a test for this batch to start recording marks.</p>
+            </div>
+        {% endif %}
+
+        <div class="faculty-batch-detail-actions">
+            <a class="faculty-primary-button"
+               href="{% url 'faculty_create_test' %}?batch={{ batch.id }}">
+                + Create Test
+            </a>
+
+            <a class="faculty-secondary-button"
+               href="{% url 'faculty_tests' %}">
+                View All Tests
+            </a>
+        </div>
+    </section>
+
+
+    <!-- Recent attendance -->
+    <section class="dashboard-section" id="attendance-section">
+        <div class="section-heading">
+            <h2>Recent Attendance</h2>
+            <p>Attendance sessions recorded for {{ batch.name }}.</p>
+        </div>
+
+        {% if attendance_sessions %}
+            <div class="faculty-batch-detail-list">
+                {% for session in attendance_sessions %}
+                    <div class="faculty-batch-detail-row">
+                        <div>
+                            <strong>{{ session.date|date:"d M Y" }}</strong>
+
+                            <p>
+                                {{ session.start_time|time:"g:i A" }} –
+                                {{ session.end_time|time:"g:i A" }}
+                            </p>
+
+                            {% if session.topics_covered %}
+                                <p>{{ session.topics_covered }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="faculty-attendance-count-summary">
+                            <span class="attendance-present-count">
+                                Present: {{ session.present_count }}
+                            </span>
+
+                            <span class="attendance-absent-count">
+                                Absent: {{ session.absent_count }}
+                            </span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No attendance sessions yet</h3>
+                <p>Attendance sessions for this batch will appear here.</p>
+            </div>
+        {% endif %}
+
+        <div class="faculty-batch-detail-actions">
+            <a class="faculty-primary-button"
+               href="{% url 'faculty_attendance' %}?batch={{ batch.id }}">
+                Take Attendance
+            </a>
+        </div>
+    </section>
+
+</div>
+{% endblock %}

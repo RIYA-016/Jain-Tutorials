@@ -1,0 +1,102 @@
+{% extends "dashboard/faculty_base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="faculty-page faculty-tests-page">
+
+    <div class="page-heading">
+        <div>
+            <p class="portal-page-label">ACADEMICS</p>
+            <h1>Enter / Edit Marks</h1>
+            <p>{{ test.batch.name }} &middot; {{ test.subject.name }}</p>
+        </div>
+
+        <a href="{% url 'faculty_tests' %}"
+           class="faculty-secondary-button">
+            Back to Tests
+        </a>
+    </div>
+
+    <section class="dashboard-section">
+
+        <div class="faculty-test-summary">
+            <h2>{{ test.title }}</h2>
+
+            {% if test.topic %}
+                <p>Topic: {{ test.topic }}</p>
+            {% endif %}
+
+            <p>
+                Test date: {{ test.test_date|date:"d M Y" }}
+                &middot;
+                Maximum marks: {{ test.max_marks }}
+            </p>
+        </div>
+
+        {% if errors %}
+            <div class="faculty-alert" role="alert">
+                {% for error in errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% if students %}
+            <form method="post" class="faculty-marks-form">
+                {% csrf_token %}
+
+                <div class="faculty-marks-table-wrapper">
+                    <table class="faculty-marks-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Username</th>
+                                <th>Marks (out of {{ test.max_marks }})</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for student in students %}
+                                <tr>
+                                    <td>
+                                        {{ student.user.get_full_name|default:student.user.username }}
+                                    </td>
+
+                                    <td>{{ student.user.username }}</td>
+
+                                    <td>
+                                        <input
+                                            type="number"
+                                            name="marks_{{ student.id }}"
+                                            min="0"
+                                            max="{{ test.max_marks }}"
+                                            step="0.01"
+                                            value="{{ student.input_value }}"
+                                            aria-label="Marks for {{ student.user.username }}"
+                                        >
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <p class="faculty-marks-help">
+                    Leave a field blank to leave that student's existing mark unchanged.
+                    Enter 0 if the student scored zero.
+                </p>
+
+                <button type="submit" class="faculty-primary-button">
+                    Save Marks
+                </button>
+            </form>
+        {% else %}
+            <div class="empty-state">
+                <h3>No enrolled students found</h3>
+                <p>There are no active student enrollments in this batch.</p>
+            </div>
+        {% endif %}
+
+    </section>
+</div>
+{% endblock %}

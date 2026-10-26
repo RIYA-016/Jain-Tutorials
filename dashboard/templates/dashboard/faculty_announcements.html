@@ -1,0 +1,194 @@
+
+{% extends "dashboard/faculty_base.html" %}
+
+{% block content %}
+<div class="faculty-page faculty-announcements-page">
+
+    <!-- Page Heading -->
+    <div class="page-heading">
+        <p class="portal-page-label">FACULTY PORTAL / ANNOUNCEMENTS</p>
+        <h1>Announcements</h1>
+        <p>Publish important notices for your batches.</p>
+    </div>
+
+    <!-- Success and Error Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="announcement-message {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Create Announcement Form -->
+    <section class="announcement-form-card">
+        <h2>Create Announcement</h2>
+
+        <form method="post" action="{% url 'faculty_announcements' %}">
+            {% csrf_token %}
+
+            <div class="announcement-form-field">
+                <label for="announcement-title">Title</label>
+                <input
+                    type="text"
+                    id="announcement-title"
+                    name="title"
+                    maxlength="200"
+                    placeholder="e.g. Mathematics Unit Test"
+                    value="{{ request.POST.title|default:'' }}"
+                    required
+                >
+            </div>
+
+            <div class="announcement-form-field">
+                <label for="announcement-content">Announcement Message</label>
+                <textarea
+                    id="announcement-content"
+                    name="content"
+                    rows="5"
+                    placeholder="Write your announcement here..."
+                    required
+                >{{ request.POST.content|default:'' }}</textarea>
+            </div>
+
+            <div class="announcement-form-field">
+                <label for="announcement-batch">Target Batch</label>
+
+                <select id="announcement-batch" name="batch">
+                    <option value="">All students</option>
+
+                    {% for batch in faculty_batches %}
+                        <option
+                            value="{{ batch.pk }}"
+                            {% if request.POST.batch == batch.pk|stringformat:"s" %}selected{% endif %}
+                        >
+                            {{ batch.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+
+                <small>
+                    Select a batch to target specific students, or choose
+                    All students for a general announcement.
+                </small>
+            </div>
+
+            <button type="submit" class="faculty-primary-button">
+                Publish Announcement
+            </button>
+        </form>
+    </section>
+
+    <!-- Announcement History -->
+    <section class="announcement-list-section">
+
+        <div class="announcement-list-heading">
+            <h2>Your Announcements</h2>
+            <span>{{ announcements|length }} total</span>
+        </div>
+
+        {% for announcement in announcements %}
+            <article class="faculty-announcement-card">
+
+                <!-- Announcement Details -->
+                <div class="faculty-announcement-content">
+
+                    <div class="faculty-announcement-meta">
+                        {% if announcement.batch %}
+                            <span>{{ announcement.batch.name }}</span>
+                        {% else %}
+                            <span>All students</span>
+                        {% endif %}
+
+                        <span>
+                            {{ announcement.published_at|date:"d M Y, h:i A" }}
+                        </span>
+
+                        {% if announcement.is_active %}
+                            <span class="announcement-status-active">
+                                Active
+                            </span>
+                        {% else %}
+                            <span class="announcement-status-inactive">
+                                Inactive
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <h3>{{ announcement.title }}</h3>
+
+                    <p class="faculty-announcement-body">
+                        {{ announcement.content|linebreaksbr }}
+                    </p>
+
+                </div>
+
+                <!-- Announcement Actions -->
+                <div class="faculty-announcement-actions">
+
+                    <!-- Edit -->
+                    <a
+                        href="{% url 'faculty_edit_announcement' announcement.pk %}"
+                        class="faculty-primary-button"
+                    >
+                        Edit
+                    </a>
+
+                    <!-- Deactivate / Reactivate -->
+                    <form
+                        method="post"
+                        action="{% url 'faculty_toggle_announcement' announcement.pk %}"
+                        onsubmit="return confirm('Are you sure you want to {% if announcement.is_active %}deactivate{% else %}reactivate{% endif %} this announcement?');"
+                    >
+                        {% csrf_token %}
+
+                        {% if announcement.is_active %}
+                            <button
+                                type="submit"
+                                class="faculty-delete-button"
+                            >
+                                Deactivate
+                            </button>
+                        {% else %}
+                            <button
+                                type="submit"
+                                class="faculty-primary-button"
+                            >
+                                Reactivate
+                            </button>
+                        {% endif %}
+                    </form>
+
+                    <!-- Permanent Delete -->
+                    <form
+                        method="post"
+                        action="{% url 'faculty_permanently_delete_announcement' announcement.pk %}"
+                        onsubmit="return confirm('Permanently delete this announcement? This action cannot be undone.');"
+                    >
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="faculty-delete-button"
+                        >
+                            Delete Permanently
+                        </button>
+                    </form>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+            <div class="announcement-empty-state">
+                <h3>No announcements yet</h3>
+                <p>
+                    Your announcements will appear here after you publish them.
+                </p>
+            </div>
+        {% endfor %}
+
+    </section>
+
+</div>
+{% endblock %}

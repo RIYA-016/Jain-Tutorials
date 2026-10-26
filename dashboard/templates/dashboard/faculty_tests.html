@@ -1,0 +1,80 @@
+{% extends "dashboard/faculty_base.html" %}
+{% load static %}
+
+{% block content %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="faculty-alert faculty-alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="faculty-page faculty-tests-page">
+
+    <div class="page-heading">
+        <div>
+            <p class="portal-page-label">ACADEMICS</p>
+            <h1>Tests &amp; Marks</h1>
+            <p>Manage tests and student results for your assigned batches.</p>
+        </div>
+
+        <a href="{% url 'faculty_create_test' %}"
+           class="faculty-primary-button">
+            Create Test
+        </a>
+    </div>
+
+    <section class="dashboard-section">
+        <div class="section-heading">
+            <h2>All Tests</h2>
+            <span>{{ tests|length }} test{{ tests|length|pluralize }}</span>
+        </div>
+
+        {% if tests %}
+            <div class="faculty-tests-list">
+                {% for test in tests %}
+                    <article class="faculty-test-card">
+                        <div class="faculty-test-info">
+                            <h3>{{ test.title }}</h3>
+
+                            <p>
+                                {{ test.subject.name }}
+                                &middot;
+                                {{ test.batch.name }}
+                            </p>
+
+                            {% if test.topic %}
+                                <p>Topic: {{ test.topic }}</p>
+                            {% endif %}
+
+                            <p>
+                                Date: {{ test.test_date|date:"d M Y" }}
+                                &middot;
+                                Maximum marks: {{ test.max_marks }}
+                            </p>
+                        </div>
+
+                        <a href="{% url 'faculty_enter_marks' test.id %}"
+                           class="faculty-primary-button">
+                            Enter / Edit Marks
+                        </a>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No tests created yet</h3>
+                <p>Create a test for one of your assigned batches to get started.</p>
+
+                <a href="{% url 'faculty_create_test' %}"
+                   class="faculty-primary-button">
+                    Create Your First Test
+                </a>
+            </div>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}
